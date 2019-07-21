@@ -1,10 +1,10 @@
-import { Operators } from './constants'
+import { Operators } from '../Types/constants'
 
 class Where extends String {
-    constructor(string){
+    constructor(value){
         super()
         this._init = true
-        this._sql = string || ''
+        this._sql = value || ''
     }
     // settes/getters - Encapsulation
     get sql(){
