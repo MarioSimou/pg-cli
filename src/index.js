@@ -2,11 +2,32 @@ import all from './Syntax/all'
 import insertInto from './Syntax/insertInto'
 import returning from './Syntax/returning'
 import values from './Syntax/values'
+import as from './Syntax/as'
+import select from './Syntax/select'
+import _from from './Syntax/from'
 
-const PostgreSQL = function({ table , schema }){
+const PostgreSQL = function({ table , schema, columns }){
+    // Input check
+    if(!table) throw new Error('please specify a table')
+    if(!schema) throw new Error('please specify a schema')
+    if(!columns) throw new Error('please specify columns')
+
+    // Input type check
+    if(typeof(table) !== 'string' || typeof(schema) !== 'string') 
+        throw new Error('table and schema should be strings')
+    if(!typeof(colums) instanceof Array) 
+        throw new Error('columns should be table')
+
+    this._statement = {}
+    this._selectionSet = []
     this._table = table
     this._schema = schema
-    this._statement = {}
+    this._columns = columns.reduce((o,column)=> {
+        o[column]=column
+        const get = ()=>{  this._selectionSet.push(column); return this }
+        Object.defineProperty(o, column , { get: get })
+        return o
+    } , {})
 }
 
 // Static method used to populate the prototype object of PostgreSQL class
@@ -22,8 +43,8 @@ PostgreSQL.set = function(arg){
         return this
     }
 }
-
-// GETTER - end
+// GETTER -SETTERS
+// end
 const end = function(){
     const values = new Map(Object.entries(this._statement)).values(), 
           sql = [], 
@@ -39,7 +60,9 @@ const end = function(){
 
     return [ sql.join(' ') , params ]
 }
+
 Object.defineProperty(PostgreSQL.prototype, 'end' , { get: end })
+Object.defineProperty(PostgreSQL.prototype, 'columns' , { get: function(){ return this._columns }} )
 
 
 // SQL syntax available for pg-cli
@@ -47,6 +70,8 @@ PostgreSQL.set(insertInto)
 PostgreSQL.set(values)
 PostgreSQL.set(returning)
 PostgreSQL.set(all)
-
+PostgreSQL.set(as)
+PostgreSQL.set(select)
+PostgreSQL.set(_from)
 
 export default PostgreSQL
