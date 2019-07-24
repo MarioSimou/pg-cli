@@ -5,6 +5,10 @@ import values from './Syntax/values'
 import as from './Syntax/as'
 import select from './Syntax/select'
 import _from from './Syntax/from'
+import update from './Syntax/update'
+import set from './Syntax/set'
+import deleteFrom from './Syntax/deleteFrom';
+import where from './Syntax/where'
 
 const PostgreSQL = function({ table , schema, columns }){
     // Input check
@@ -73,5 +77,9 @@ PostgreSQL.set(all)
 PostgreSQL.set(as)
 PostgreSQL.set(select)
 PostgreSQL.set(_from)
+PostgreSQL.set(update)
+PostgreSQL.set(set)
+PostgreSQL.set(deleteFrom)
+PostgreSQL.set(where)
 
 export default PostgreSQL
