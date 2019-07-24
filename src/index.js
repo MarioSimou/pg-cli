@@ -1,14 +1,14 @@
-import all from './Syntax/all'
-import insertInto from './Syntax/insertInto'
-import returning from './Syntax/returning'
-import values from './Syntax/values'
-import as from './Syntax/as'
-import select from './Syntax/select'
-import _from from './Syntax/from'
-import update from './Syntax/update'
-import set from './Syntax/set'
-import deleteFrom from './Syntax/deleteFrom';
-import where from './Syntax/where'
+import all from './Syntax/Postgresql/all'
+import insertInto from './Syntax/Postgresql/insertInto'
+import returning from './Syntax/Postgresql/returning'
+import values from './Syntax/Postgresql/values'
+import select from './Syntax/Postgresql/select'
+import _from from './Syntax/Postgresql/from'
+import update from './Syntax/Postgresql/update'
+import set from './Syntax/Postgresql/set'
+import deleteFrom from './Syntax/Postgresql/deleteFrom';
+import where from './Syntax/Postgresql/where'
+import Column from './Column'
 
 const PostgreSQL = function({ table , schema, columns }){
     // Input check
@@ -22,27 +22,22 @@ const PostgreSQL = function({ table , schema, columns }){
     if(!typeof(colums) instanceof Array) 
         throw new Error('columns should be table')
 
-    this._statement = {}
-    this._selectionSet = []
+    this._statement = []
+    this._params = []
     this._table = table
     this._schema = schema
-    this._columns = columns.reduce((o,column)=> {
-        o[column]=column
-        const get = ()=>{  this._selectionSet.push(column); return this }
-        Object.defineProperty(o, column , { get: get })
-        return o
-    } , {})
+    this._columns = columns.reduce((o,column)=> ({ ...o , [column]: new Column(column)}) , {})
 }
 
 // Static method used to populate the prototype object of PostgreSQL class
-PostgreSQL.set = function(arg){
-    if(!arg || !arg.name || typeof arg.name !== 'string' ) throw new Error('not valid type')
-    if(!arg || !arg.constructor || typeof arg.constructor !== 'function' ) throw new Error('no valid type')
+PostgreSQL.set = function(param){
+    if(!param || !param.name || typeof param.name !== 'string' ) throw new Error('not valid type')
+    if(!param || !param.constructor || typeof param.constructor !== 'function' ) throw new Error('no valid type')
 
     // populates the prototype so all methods to be set when the object is initialized
-    this.prototype[arg.name] = function(){
+    this.prototype[param.name] = function(...args){
         // we extend the arguments variable to include the method name
-        arg.constructor.apply(this , [ arg.name , ...arguments ])
+        param.constructor.call(this ,  args , param.name )
         // default return for any methods
         return this
     }
@@ -50,19 +45,13 @@ PostgreSQL.set = function(arg){
 // GETTER -SETTERS
 // end
 const end = function(){
-    const values = new Map(Object.entries(this._statement)).values(), 
-          sql = [], 
-          params = []
-
-    for(let value of values){
-        sql.push(value.statement)
-        params.concat(value.params)
-    }
-
+    const statements = this._statement
+    const params = this._params
     // resets the staement object
-    this._statement = {}
+    this._statement = []
+    this._params = []
 
-    return [ sql.join(' ') , params ]
+    return [ statements.join(' ') , params ]
 }
 
 Object.defineProperty(PostgreSQL.prototype, 'end' , { get: end })
@@ -74,7 +63,6 @@ PostgreSQL.set(insertInto)
 PostgreSQL.set(values)
 PostgreSQL.set(returning)
 PostgreSQL.set(all)
-PostgreSQL.set(as)
 PostgreSQL.set(select)
 PostgreSQL.set(_from)
 PostgreSQL.set(update)
