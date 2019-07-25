@@ -20,7 +20,7 @@ export default (function(){
                 if(recordParams.length !== colSize ) throw new Error('Inconstent values data structure')
 
                 params.push(...recordParams)
-                statement.push(recordStatement)
+                statement.push(`(${recordStatement})`)
             }
 
             this._statement.push(`${colNames} VALUES ${statement.join(',')}`)

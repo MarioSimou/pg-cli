@@ -1,5 +1,10 @@
 import _as from './Syntax/Column/as'
 import _equal from './Syntax/Column/equal'
+import _unequal from './Syntax/Column/unequal'
+import _gt from './Syntax/Column/gt'
+import _gte from './Syntax/Column/gte'
+import _lt from './Syntax/Column/lt'
+import _lte from './Syntax/Column/lte'
 import _and from './Syntax/Column/and'
 import _or from './Syntax/Column/or'
 
@@ -29,6 +34,11 @@ Column.set = function(arg){
 // Prototype methods for Column Class
 Column.set(_as)
 Column.set(_equal)
+Column.set(_unequal)
+Column.set(_gt)
+Column.set(_gte)
+Column.set(_lt)
+Column.set(_lte)
 Column.set(_and)
 Column.set(_or)
 
