@@ -1,6 +1,7 @@
 import PostgreSQL from './index'
 
 const p1 = new PostgreSQL({ table : 'user' , schema : 'public', columns: ['username' , 'email'] })
+const p2 = new PostgreSQL({ table : 'products' , schema: 'public', columns: ['prodName', 'price']})
 // console.log(p1.insertInto({ table : 'user' , schema: 'public'})
 //   .values({ username: 'john' , email: 'john@gmail.com'} , { username: 'foo' , email: 'foo@gmail.com' }).returning().all().end)
 
@@ -16,4 +17,13 @@ const p1 = new PostgreSQL({ table : 'user' , schema : 'public', columns: ['usern
 
 // console.log(p1.update().set(p1.columns.username.equal('jonathan21') , p1.columns.email.equal('jonathan21@gmail.com')).where(p1.columns.username.equal('some')).returning().all().end)
 
-console.log(p1.deleteFrom().where(p1.columns.email.equal('honathan@email').or(p1.columns.email.in('jonsine@email.com'))).end)
+
+console.log(
+  p1.deleteFrom()
+    .where(
+        p1.columns.email.equal('honathan@email')
+        .or(p1.columns.username.all(
+          p2.select(p2.columns.prodName , p2.columns.price.as('prod_price')).from().end)
+        ))
+    .end
+  )

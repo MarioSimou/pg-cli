@@ -7,10 +7,14 @@ import _lt from './Syntax/Column/lt'
 import _lte from './Syntax/Column/lte'
 import _and from './Syntax/Column/and'
 import _or from './Syntax/Column/or'
+import _in from './Syntax/Column/in'
+import _notIn from './Syntax/Column/notIn'
+import _any from './Syntax/Column/any'
+import _all from './Syntax/Column/all'
 
 const Column = function(colName){
     const getColName = function(){ return this }
-    const getEnd = function(){ return this._value.join(',') }
+    // const getEnd = function(){ return this._values.join(',') }
     this._colName = colName   
     this._values = []
     this._params = []
@@ -19,7 +23,7 @@ const Column = function(colName){
     // getters
     Object.defineProperties( this , {
         [colName] : { get : getColName },
-        end : { get: getEnd }
+        // end : { get: getEnd }
     })
 }
 
@@ -41,5 +45,9 @@ Column.set(_lt)
 Column.set(_lte)
 Column.set(_and)
 Column.set(_or)
+Column.set(_in)
+Column.set(_notIn)
+Column.set(_any)
+Column.set(_all)
 
 export default Column

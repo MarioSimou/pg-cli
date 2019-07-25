@@ -15,6 +15,8 @@ export const STATEMENTS = {
     UNEQUAL: 'unequal',
     OR: 'or',
     IN: 'in',
+    NOT_IN: 'notIn',
+    ANY: 'any',
     GT: 'gt',
     GTE: 'gte',
     LT: 'lt',
