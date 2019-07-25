@@ -4,19 +4,21 @@ export default (function(){
     return {
         name: STATEMENTS.WHERE,
         constructor: function(columns){
-            const offset = this._params.length
-            const n = columns.length
+            const [column] = columns
+            let offset = this._params.length + 1
             const statements = [], params = []
 
-            for(let i=0; i < n; i++){
-                const column = columns[i]
-                const statement = `${column._values[i]}$${i+offset+1}` 
-                const param = column._params[i]
+            while(column._values.length){
+                const value = column._values.shift()
+                const param = column._params.shift()
+                const operator = column._operators.shift() || ''
+                const statement = `${value}$${offset} ${operator}`
                 statements.push(statement)
                 params.push(param)
+                offset++
             }
 
-            this._statement.push( `WHERE ${statements.join(',')}`)
+            this._statement.push( `WHERE ${statements.join(' ')}`)
             this._params.push(...params)
         }
     }

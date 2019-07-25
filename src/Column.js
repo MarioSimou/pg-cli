@@ -1,5 +1,7 @@
 import _as from './Syntax/Column/as'
-import _equals from './Syntax/Column/equals'
+import _equal from './Syntax/Column/equal'
+import _and from './Syntax/Column/and'
+import _or from './Syntax/Column/or'
 
 const Column = function(colName){
     const getColName = function(){ return this }
@@ -7,6 +9,7 @@ const Column = function(colName){
     this._colName = colName   
     this._values = []
     this._params = []
+    this._operators = []
     
     // getters
     Object.defineProperties( this , {
@@ -25,6 +28,8 @@ Column.set = function(arg){
 
 // Prototype methods for Column Class
 Column.set(_as)
-Column.set(_equals)
+Column.set(_equal)
+Column.set(_and)
+Column.set(_or)
 
 export default Column

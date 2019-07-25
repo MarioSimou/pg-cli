@@ -9,8 +9,15 @@ export const STATEMENTS = {
     UPDATE: 'update',
     VALUES: 'values',
     WHERE: 'where',
-    AND: 'AND',
+    AND: 'and',
     AS: 'as',
-    EQUALS: 'equals'    
+    EQUAL: 'equal',
+    UNEQUAL: 'unequal',
+    OR: 'or',
+    IN: 'in',
+    GT: 'gt',
+    GTE: 'gte',
+    LT: 'lt',
+    LTE: 'lte'
 }
 
