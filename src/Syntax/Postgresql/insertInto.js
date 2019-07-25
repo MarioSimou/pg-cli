@@ -1,6 +1,8 @@
+import { STATEMENTS } from '../../constants'  
+
 export default (function(){
     return {
-        name: 'insertInto',
+        name: STATEMENTS.INSERT_INTO,
         constructor: function(args){
             const [tableName] = args
             let statement = 'INSERT INTO'

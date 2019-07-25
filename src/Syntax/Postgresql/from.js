@@ -1,6 +1,8 @@
+import { STATEMENTS } from '../../constants'  
+
 export default (function(){
     return {
-        name: 'from',
+        name: STATEMENTS.FROM,
         constructor: function(args){
             const [tableName] = args
             let statement = 'FROM'

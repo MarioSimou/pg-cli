@@ -1,6 +1,8 @@
+import { STATEMENTS } from '../../constants'  
+
 export default (function(){
     return {
-        name: 'set',
+        name: STATEMENTS.SET,
         constructor: function(columns){
             const offset = this._params.length
             const statement = [], params = []

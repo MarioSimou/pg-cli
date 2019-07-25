@@ -1,13 +1,13 @@
-import all from './Syntax/Postgresql/all'
-import insertInto from './Syntax/Postgresql/insertInto'
-import returning from './Syntax/Postgresql/returning'
-import values from './Syntax/Postgresql/values'
-import select from './Syntax/Postgresql/select'
+import _all from './Syntax/Postgresql/all'
+import _insertInto from './Syntax/Postgresql/insertInto'
+import _returning from './Syntax/Postgresql/returning'
+import _values from './Syntax/Postgresql/values'
+import _select from './Syntax/Postgresql/select'
 import _from from './Syntax/Postgresql/from'
-import update from './Syntax/Postgresql/update'
-import set from './Syntax/Postgresql/set'
-import deleteFrom from './Syntax/Postgresql/deleteFrom';
-import where from './Syntax/Postgresql/where'
+import _update from './Syntax/Postgresql/update'
+import _set from './Syntax/Postgresql/set'
+import _deleteFrom from './Syntax/Postgresql/deleteFrom';
+import _where from './Syntax/Postgresql/where'
 import Column from './Column'
 
 const PostgreSQL = function({ table , schema, columns }){
@@ -59,15 +59,15 @@ Object.defineProperty(PostgreSQL.prototype, 'columns' , { get: function(){ retur
 
 
 // SQL syntax available for pg-cli
-PostgreSQL.set(insertInto)
-PostgreSQL.set(values)
-PostgreSQL.set(returning)
-PostgreSQL.set(all)
-PostgreSQL.set(select)
+PostgreSQL.set(_insertInto)
+PostgreSQL.set(_values)
+PostgreSQL.set(_returning)
+PostgreSQL.set(_all)
+PostgreSQL.set(_select)
 PostgreSQL.set(_from)
-PostgreSQL.set(update)
-PostgreSQL.set(set)
-PostgreSQL.set(deleteFrom)
-PostgreSQL.set(where)
+PostgreSQL.set(_update)
+PostgreSQL.set(_set)
+PostgreSQL.set(_deleteFrom)
+PostgreSQL.set(_where)
 
 export default PostgreSQL

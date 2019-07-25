@@ -1,8 +1,6 @@
 import _as from './Syntax/Column/as'
 import _equals from './Syntax/Column/equals'
 
-console.log(_equals)
-
 const Column = function(colName){
     const getColName = function(){ return this }
     const getEnd = function(){ return this._value.join(',') }

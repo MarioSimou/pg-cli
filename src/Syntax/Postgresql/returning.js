@@ -1,6 +1,8 @@
+import { STATEMENTS } from '../../constants'  
+
 export default (function(){
     return {
-        name: 'returning',
+        name: STATEMENTS.RETURNING,
         constructor: function(args){
             this._statement.push('RETURNING')
         }

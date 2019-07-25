@@ -1,6 +1,7 @@
+import { STATEMENTS } from '../../constants'  
 export default (function(){
     return {
-        name: 'deleteFrom',
+        name: STATEMENTS.DELETE_FROM,
         constructor: function(args){
             const [tableName] = args
             let statement = 'DELETE FROM'

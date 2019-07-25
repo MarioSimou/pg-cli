@@ -1,6 +1,8 @@
+import { STATEMENTS } from '../../constants'  
+
 export default (function(){
     return {
-        name: 'where',
+        name: STATEMENTS.WHERE,
         constructor: function(columns){
             const offset = this._params.length
             const n = columns.length
