@@ -1,10 +1,14 @@
-import as from './Syntax/Column/as'
+import _as from './Syntax/Column/as'
+import _equals from './Syntax/Column/equals'
+
+console.log(_equals)
 
 const Column = function(colName){
     const getColName = function(){ return this }
-    const getEnd = function(){ return this._colName.join(' ') }
-    this._colName = [ colName ]   
-    this._initColName = colName
+    const getEnd = function(){ return this._value.join(',') }
+    this._colName = colName   
+    this._values = []
+    this._params = []
     
     // getters
     Object.defineProperties( this , {
@@ -22,6 +26,7 @@ Column.set = function(arg){
 }
 
 // Prototype methods for Column Class
-Column.set(as)
+Column.set(_as)
+Column.set(_equals)
 
 export default Column
