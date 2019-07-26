@@ -3,28 +3,21 @@ import { STATEMENTS } from '../../constants'
 export default (function(){
     return {
         name: STATEMENTS.VALUES,
-        constructor: function(args){
-            const offset = this._params.length
-            const n = args.length
-            const columns = Object.keys(args[0])
-            const colSize = columns.length
-            const colNames = `(${columns.join(',')})`
-            const statement = []
-            const params = []
+        constructor: function(records){
+            const statements = [] , columns = new Set()
 
-            for(let i= 0 + offset ; i < n + offset; i++){
-                
-                const record = args[i-offset]
-                const recordParams = Object.values(record)
-                const recordStatement = Object.keys(record).map( (v, vi) => `${v}=$${i*colSize+vi+1}`).join(',')
-                if(recordParams.length !== colSize ) throw new Error('Inconstent values data structure')
-
-                params.push(...recordParams)
-                statement.push(`(${recordStatement})`)
+            for(let record of records){
+                const statement = []
+                for(let column of record){
+                    if(!columns.has(column._colName)){
+                        columns.add(column._colName)
+                    }
+                    statement.push(`$${this._params.length+1}`)
+                    this._params.push(column._params.pop())
+                }
+                statements.push(`(${statement.join(',')})`)
             }
-
-            this._statement.push(`${colNames} VALUES ${statement.join(',')}`)
-            this._params.push(...params)
+            this._statement.push(`(${Array.from(columns).join(',')}) VALUES ${statements.join(',')}`)
         }
     }
 })()

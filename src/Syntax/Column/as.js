@@ -5,7 +5,7 @@ export default (function(){
         name : STATEMENTS.AS,
         constructor: function(...args){
             const [ newColName ] = args
-            this._values.push(`${this._colName} as ${newColName}`)
+            this._values.push(`${this._fullColName} as ${newColName}`)
         }
     }
 })()

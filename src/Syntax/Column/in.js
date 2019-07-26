@@ -5,7 +5,7 @@ export default (function(){
         name: STATEMENTS.IN,
         constructor: function(arg){
             const [ statement , params ] = arg
-            this._values.push(`${ this._colName } IN (${statement})`)
+            this._values.push(`${ this._fullColName } IN (${statement})`)
             this._params.push(...params)
         }
     }

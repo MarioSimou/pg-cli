@@ -1,5 +1,4 @@
 import { STATEMENTS } from '../../constants'  
-import Column from '../../Column';
 
 export default (function(){
     return {
@@ -12,7 +11,7 @@ export default (function(){
                     statements.push(column._values.pop())
                     continue
                 } 
-                statements.push(column._colName)
+                statements.push(column._fullColName)
             }
 
             const statement = `SELECT ${statements.join(',') || '*' }`

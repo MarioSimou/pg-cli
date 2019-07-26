@@ -13,7 +13,8 @@ import _any from './Syntax/Column/any'
 import _all from './Syntax/Column/all'
 
 const Column = function({ colName , table, schema}){
-    this._colName = `${schema}."${table}"."${colName}"`   
+    this._colName = colName
+    this._fullColName = `${schema}."${table}"."${colName}"`   
     this._values = []
     this._params = []
     this._operators = []
