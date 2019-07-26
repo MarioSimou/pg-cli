@@ -1,16 +1,16 @@
-import _all from './Syntax/Postgresql/all'
-import _insertInto from './Syntax/Postgresql/insertInto'
-import _returning from './Syntax/Postgresql/returning'
-import _values from './Syntax/Postgresql/values'
-import _select from './Syntax/Postgresql/select'
-import _from from './Syntax/Postgresql/from'
-import _update from './Syntax/Postgresql/update'
-import _set from './Syntax/Postgresql/set'
-import _deleteFrom from './Syntax/Postgresql/deleteFrom';
-import _where from './Syntax/Postgresql/where'
+import _all from './Syntax/PgSql/all'
+import _insertInto from './Syntax/PgSql/insertInto'
+import _returning from './Syntax/PgSql/returning'
+import _values from './Syntax/PgSql/values'
+import _select from './Syntax/PgSql/select'
+import _from from './Syntax/PgSql/from'
+import _update from './Syntax/PgSql/update'
+import _set from './Syntax/PgSql/set'
+import _deleteFrom from './Syntax/PgSql/deleteFrom';
+import _where from './Syntax/PgSql/where'
 import Column from './Column'
 
-const PostgreSQL = function({ table , schema, columns }){
+const PgSql = function({ table , schema, columns }){
     // Input check
     if(!table) throw new Error('please specify a table')
     if(!schema) throw new Error('please specify a schema')
@@ -30,7 +30,7 @@ const PostgreSQL = function({ table , schema, columns }){
 }
 
 // Static method used to populate the prototype object of PostgreSQL class
-PostgreSQL.set = function(param){
+PgSql.set = function(param){
     if(!param || !param.name || typeof param.name !== 'string' ) throw new Error('not valid type')
     if(!param || !param.constructor || typeof param.constructor !== 'function' ) throw new Error('no valid type')
 
@@ -54,20 +54,20 @@ const end = function(){
     return [ statements.join(' ') , params ]
 }
 
-Object.defineProperty(PostgreSQL.prototype, 'end' , { get: end })
-Object.defineProperty(PostgreSQL.prototype, 'columns' , { get: function(){ return this._columns }} )
+Object.defineProperty(PgSql.prototype, 'end' , { get: end })
+Object.defineProperty(PgSql.prototype, 'columns' , { get: function(){ return this._columns }} )
 
 
 // SQL syntax available for pg-cli
-PostgreSQL.set(_insertInto)
-PostgreSQL.set(_values)
-PostgreSQL.set(_returning)
-PostgreSQL.set(_all)
-PostgreSQL.set(_select)
-PostgreSQL.set(_from)
-PostgreSQL.set(_update)
-PostgreSQL.set(_set)
-PostgreSQL.set(_deleteFrom)
-PostgreSQL.set(_where)
+PgSql.set(_insertInto)
+PgSql.set(_values)
+PgSql.set(_returning)
+PgSql.set(_all)
+PgSql.set(_select)
+PgSql.set(_from)
+PgSql.set(_update)
+PgSql.set(_set)
+PgSql.set(_deleteFrom)
+PgSql.set(_where)
 
-export default PostgreSQL
+export default PgSql

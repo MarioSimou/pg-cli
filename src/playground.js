@@ -1,7 +1,7 @@
-import PostgreSQL from './index'
+import pgSQL from './index'
 
-const p1 = new PostgreSQL({ table : 'user' , schema : 'public', columns: ['username' , 'email'] })
-const p2 = new PostgreSQL({ table : 'products' , schema: 'public', columns: ['prodName', 'price']})
+const p1 = new pgSQL({ table : 'user' , schema : 'public', columns: ['username' , 'email'] })
+const p2 = new pgSQL({ table : 'products' , schema: 'public', columns: ['prodName', 'price']})
 // console.log(p1.insertInto({ table : 'user' , schema: 'public'})
 //   .values({ username: 'john' , email: 'john@gmail.com'} , { username: 'foo' , email: 'foo@gmail.com' }).returning().all().end)
 
