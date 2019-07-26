@@ -12,19 +12,16 @@ import _notIn from './Syntax/Column/notIn'
 import _any from './Syntax/Column/any'
 import _all from './Syntax/Column/all'
 
-const Column = function(colName){
-    const getColName = function(){ return this }
-    // const getEnd = function(){ return this._values.join(',') }
-    this._colName = colName   
+const Column = function({ colName , table, schema}){
+    this._colName = `${schema}."${table}"."${colName}"`   
     this._values = []
     this._params = []
     this._operators = []
-    
+
+    const getColName = function(){ return this }
+    const getFullColName = function(){ return }
     // getters
-    Object.defineProperties( this , {
-        [colName] : { get : getColName },
-        // end : { get: getEnd }
-    })
+    Object.defineProperty( this,  colName , { get : getColName })
 }
 
 // class method that populates the prototype with methods

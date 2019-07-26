@@ -7,12 +7,13 @@ export default (function(){
             const [column] = columns
             let offset = this._params.length + 1
             const statements = [], params = []
-            const regex = /(IN||BETWEEN||NOT||ANY||ALL)/
+            const regex = /(IN|BETWEEN|NOT|ANY|ALL)/
 
             while(column._values.length){
                 const value = column._values.shift()
                 // if the statement is any the regex options, the value is handled differently
-                if( regex.test( value )){   
+                if( regex.test( value )){ 
+                    console.log('inside')  
                     statements.push( value)
                     continue
                 }

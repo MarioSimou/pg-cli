@@ -18,10 +18,14 @@
   },
   "homepage": "https://github.com/MarioSimou/pg-cli#readme",
   "dependencies": {
+    "@babel/preset-env": "^7.5.5",
     "esm": "^3.2.25",
     "pg": "^7.11.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "babel-jest": "^24.8.0",
     "jest": "^24.8.0"
   }
 }

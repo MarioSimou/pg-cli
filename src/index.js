@@ -26,7 +26,7 @@ const PgSql = function({ table , schema, columns }){
     this._params = []
     this._table = table
     this._schema = schema
-    this._columns = columns.reduce((o,column)=> ({ ...o , [column]: new Column(column)}) , {})
+    this._columns = columns.reduce((o,column)=> ({ ...o , [column]: new Column({ colName : column , table : this._table, schema: this._schema })}) , {})
 }
 
 // Static method used to populate the prototype object of PostgreSQL class
@@ -51,7 +51,7 @@ const end = function(){
     this._statement = []
     this._params = []
 
-    return [ statements.join(' ') , params ]
+    return [ statements.join(' ').trim() , params ]
 }
 
 Object.defineProperty(PgSql.prototype, 'end' , { get: end })
