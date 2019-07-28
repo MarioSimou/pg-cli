@@ -9,7 +9,6 @@ export default (function(){
                 statement.push(column._colName)
             }
 
-            console.log(statement.join(',') )
             this._statement.push( statement.length ? `RETURNING ${statement.join(',')}` : 'RETURNING')
         }
     }

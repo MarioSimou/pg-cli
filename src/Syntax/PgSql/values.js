@@ -12,12 +12,16 @@ export default (function(){
                     if(!columns.has(column._colName)){
                         columns.add(column._colName)
                     }
+                    
+                    column._values.pop() // removes the value since its unecessary 
                     statement.push(`$${this._params.length+1}`)
+
                     this._params.push(column._params.pop())
                 }
                 statements.push(`(${statement.join(',')})`)
             }
             this._statement.push(`(${Array.from(columns).join(',')}) VALUES ${statements.join(',')}`)
+            
         }
     }
 })()

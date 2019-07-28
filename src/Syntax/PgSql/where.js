@@ -5,29 +5,31 @@ export default (function(){
         name: STATEMENTS.WHERE,
         constructor: function(columns){
             const [column] = columns
-            let offset = this._params.length + 1
-            const statements = [], params = []
+            const statements = []
+            const n = column._values.length
             const regex = /(IN|BETWEEN|NOT|ANY|ALL)/
 
-            while(column._values.length){
-                const value = column._values.shift()
-                // if the statement is any the regex options, the value is handled differently
-                if( regex.test( value )){ 
-                    console.log('inside')  
-                    statements.push( value)
-                    continue
+            for(let i=0; i < n; i++){
+                const value = column._values[i]
+                const param = column._params[i]
+                const operator = column._operators[i] || ''
+                   
+                switch( regex.test(value)){
+                    case true:
+                        statements.push(value)
+                        continue
+                    default:
+                        const statement = `${value}$${this._params.length+1} ${operator}`
+                        statements.push( statement )
+                        this._params.push(param)        
                 }
 
-                const param = column._params.shift()
-                const operator = column._operators.shift() || ''
-                const statement = `${value}$${offset} ${operator}`
-                statements.push(statement)
-                params.push(param)
-                offset++
             }
 
+            // clears the stacks so they don't conflict with other values
+            column._params = [], column._values = [] , column._operators = []
+
             this._statement.push( `WHERE ${statements.join(' ')}`)
-            this._params.push(...params)
         }
     }
 })()

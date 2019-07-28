@@ -51,7 +51,7 @@ const end = function(){
     this._statement = []
     this._params = []
 
-    return [ statements.join(' ').trim() , params ]
+    return [ statements.map( v => v.trim()).join(' ').trim() , params ]
 }
 
 Object.defineProperty(PgSql.prototype, 'end' , { get: end })

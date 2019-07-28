@@ -1,7 +1,8 @@
 import pgSQL from './index'
 
-const p1 = new pgSQL({ table : 'user' , schema : 'public', columns: ['username' , 'email'] })
+const p1 = new pgSQL({ table : 'user' , schema : 'public', columns: [ 'id', 'username' , 'email'] })
 const p2 = new pgSQL({ table : 'products' , schema: 'public', columns: ['prodName', 'price']})
+
 console.log(p1.insertInto({ table : 'user' , schema: 'public'})
   .values( [
     p1.columns.username.equal('john'),
@@ -19,7 +20,14 @@ console.log(
         )
       .end)
 
-console.log(p1.update().set(p1.columns.username.equal('jonathan21') , p1.columns.email.equal('jonathan21@gmail.com')).where(p1.columns.username.equal('some')).returning().all().end)
+console.log(
+  p1.update()
+    .set(p1.columns.username.equal('jonathan21') , p1.columns.email.equal('jonathan21@gmail.com'))
+    .where(p1.columns.username.equal(1).and(p1.columns.id.equal(1)))
+    .returning()
+    .all()
+    .end
+)
 
 
 console.log(
