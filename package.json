@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --rootDir ./test -w 1",
-    "dev": "node -r esm ./src/playground.js"
+    "dev": "babel-node ./src/playground.js"
   },
   "repository": {
     "type": "git",
@@ -18,13 +18,12 @@
   },
   "homepage": "https://github.com/MarioSimou/pg-cli#readme",
   "dependencies": {
-    "@babel/preset-env": "^7.5.5",
-    "esm": "^3.2.25",
     "pg": "^7.11.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0"
   }
