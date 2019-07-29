@@ -5,31 +5,33 @@ export default (function(){
         name: STATEMENTS.WHERE,
         constructor: function(columns){
             const [column] = columns
+            const n = column._params.length
+            const m = column._values.length
+            const l = this._params.length + 1
+            const nIterations = n > m ? n : m
             const statements = []
-            const n = column._values.length
-            const regex = /(IN|BETWEEN|NOT|ANY|ALL)/
 
-            for(let i=0; i < n; i++){
+            for( let i=0; i < nIterations; i++){
                 const value = column._values[i]
-                const param = column._params[i]
-                const operator = column._operators[i] || ''
-                   
-                switch( regex.test(value)){
-                    case true:
-                        statements.push(value)
-                        continue
-                    default:
-                        const statement = `${value}$${this._params.length+1} ${operator}`
-                        statements.push( statement )
-                        this._params.push(param)        
-                }
+                // if a value does not exist, skip the iteration
+                if( !value ) continue
 
+                // if the last character of value is = 
+                if( /(=|<|>|<=|>=)/.test(value.slice(-1)) ){
+                    const operator = column._operators[i] || ''
+                    statements.push(`${ value }$${l+i} ${operator}`)
+                } else {
+                    statements.push(value)
+                }
             }
 
-            // clears the stacks so they don't conflict with other values
-            column._params = [], column._values = [] , column._operators = []
+            if(column._params.length)
+                this._params.push( ...column._params )
 
-            this._statement.push( `WHERE ${statements.join(' ')}`)
+            this._statement.push( `WHERE ${ statements.join(' ') }`)
+
+            // clean the stacks
+            column._values = [], column._params = [], column._operators
         }
     }
 })()

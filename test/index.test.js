@@ -17,7 +17,7 @@ describe( "Tesing Select clause of User Table", () => {
     test('should select all records from User model' , () => {
         const [ sql , params ] = User.select()
                                      .from()
-                                     .end
+                                     .end.toArray()
 
         expect(sql).toBe('SELECT * FROM public."user"')
         expect(params).toEqual(expect.arrayContaining([]))
@@ -29,7 +29,7 @@ describe( "Tesing Select clause of User Table", () => {
                                         User.columns.username
                                      )
                                      .from()
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe('SELECT public."user"."id",public."user"."username" FROM public."user"')
         expect(params).toEqual(expect.arrayContaining([]))
     })
@@ -41,7 +41,7 @@ describe( "Tesing Select clause of User Table", () => {
                                         User.columns.email.as('user_email')
                                      ) 
                                      .from()
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe('SELECT public."user"."id",public."user"."username",public."user"."email" as user_email FROM public."user"')
         expect(params).toEqual(expect.arrayContaining([]))
     })
@@ -55,7 +55,7 @@ describe( "Tesing Select clause of User Table", () => {
                                      )
                                      .from()
                                      .where(User.columns.id.equal(1))
-                                     .end;
+                                     .end.toArray();
                                      
         expect(sql).toBe('SELECT public."user"."id",public."user"."username",public."user"."email",public."user"."password" FROM public."user" WHERE public."user"."id"=$1')
         expect(params).toEqual(expect.arrayContaining([1]))
@@ -74,7 +74,7 @@ describe("Testing DML Insert of User Table" , () => {
                                             User.columns.role.equal('basic')   
                                          ]
                                      )
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe(`INSERT INTO public."user" (id,username,email,password,role) VALUES ($1,$2,$3,$4,$5)`)
         expect(params).toEqual(expect.arrayContaining([ 1, 'john', 'john@gmail.com', '1234', 'basic' ]))
     })
@@ -97,7 +97,7 @@ describe("Testing DML Insert of User Table" , () => {
                                             User.columns.role.equal('basic')   
                                          ]
                                      )
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe("INSERT INTO public.\"user\" (id,username,email,password,role) VALUES ($1,$2,$3,$4,$5),($6,$7,$8,$9,$10)")
         expect(params).toEqual(expect.arrayContaining([ 1, 'john', 'john@gmail.com', '1234', 'basic', 2 ,'foo','foo@gmail.com','1234','basic' ]))
     })
@@ -115,7 +115,7 @@ describe("Testing DML Insert of User Table" , () => {
                                      )
                                      .returning()
                                      .all()
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe(`INSERT INTO public."user" (id,username,email,password,role) VALUES ($1,$2,$3,$4,$5) RETURNING *`)
         expect(params).toEqual(expect.arrayContaining([ 1, 'john', 'john@gmail.com', '1234', 'basic' ]))
     })
@@ -135,7 +135,7 @@ describe("Testing DML Insert of User Table" , () => {
                                          User.columns.id,
                                          User.columns.username
                                      )
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe(`INSERT INTO public."user" (id,username,email,password,role) VALUES ($1,$2,$3,$4,$5) RETURNING id,username`)
         expect(params).toEqual(expect.arrayContaining([ 1, 'john', 'john@gmail.com', '1234', 'basic' ]))
     })
@@ -143,7 +143,7 @@ describe("Testing DML Insert of User Table" , () => {
 
 describe("Testing DML Update of User table" , () => {
     test("should update the username of all records" , () => {
-        const [ sql , params ] = User.update().set(User.columns.username.equal('foo')).end
+        const [ sql , params ] = User.update().set(User.columns.username.equal('foo')).end.toArray()
 
         expect(sql).toBe(`UPDATE public."user" SET public."user"."username"=$1`)
         expect(params).toEqual(expect.arrayContaining(['foo']))
@@ -156,7 +156,7 @@ describe("Testing DML Update of User table" , () => {
                                          User.columns.email.equal('foo@gmail.com')
                                      )
                                      .where(User.columns.id.equal(10))
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe(`UPDATE public."user" SET public."user"."username"=$1,public."user"."email"=$2 WHERE public."user"."id"=$3`)
         expect(params).toEqual(expect.arrayContaining(['foo', 'foo@gmail.com' , 10 ]))
     })
@@ -173,7 +173,7 @@ describe("Testing DML Update of User table" , () => {
                                          User.columns.username,
                                          User.columns.email
                                      )
-                                     .end
+                                     .end.toArray()
         expect(sql).toBe(`UPDATE public."user" SET public."user"."username"=$1,public."user"."email"=$2 WHERE public."user"."id"=$3 RETURNING id,username,email`)
         expect(params).toEqual(expect.arrayContaining(['foo', 'foo@gmail.com' , 10 ]))
     })
@@ -182,7 +182,7 @@ describe("Testing DML Update of User table" , () => {
 
 describe("Testing DELETE DML of User table", () => {
     test("should delete all records of User table" , () => {
-        const [ sql , params ] = User.deleteFrom().end
+        const [ sql , params ] = User.deleteFrom().end.toArray()
 
         expect(sql).toBe('DELETE FROM public."user"')
         expect(params).toEqual(expect.arrayContaining([]))
@@ -193,7 +193,7 @@ describe("Testing DELETE DML of User table", () => {
                                      .where(
                                          User.columns.role.equal('basic')
                                      )
-                                     .end
+                                     .end.toArray()
 
         expect(sql).toBe('DELETE FROM public."user" WHERE public."user"."role"=$1')
         expect(params).toEqual(expect.arrayContaining(['basic']))
@@ -210,7 +210,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                 .where(
                                     User.columns.id.equal(1)
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."id",public."user"."username" as user_name FROM public."user" WHERE public."user"."id"=$1')
         expect(params).toEqual(expect.arrayContaining([1])) 
@@ -228,7 +228,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                         User.columns.email.equal('foo@gmail.com') 
                                     )
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."username" as user_name,public."user"."email" as user_email FROM public."user" WHERE public."user"."username"=$1 AND public."user"."email"=$2')
         expect(params).toEqual(expect.arrayContaining(['foo','foo@gmail.com'])) 
@@ -245,7 +245,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                         User.columns.role.equal('edit')
                                     )
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."role"=$1 OR public."user"."role"=$2')
         expect(params).toEqual(expect.arrayContaining(['basic','edit'])) 
@@ -259,7 +259,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                 .where(
                                     User.columns.id.gt(10)
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id">$1')
         expect(params).toEqual(expect.arrayContaining([10])) 
@@ -273,7 +273,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                 .where(
                                     User.columns.id.gte(10)
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id">=$1')
         expect(params).toEqual(expect.arrayContaining([10])) 
@@ -287,7 +287,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                 .where(
                                     User.columns.id.lt(10)
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id"<$1')
         expect(params).toEqual(expect.arrayContaining([10])) 
@@ -301,7 +301,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                 .where(
                                     User.columns.id.lte(10)
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id"<=$1')
         expect(params).toEqual(expect.arrayContaining([10])) 
@@ -316,10 +316,66 @@ describe("Testing WHERE clause with multiple operators" , () => {
                                     User.columns.id.gt(10)
                                     .and(User.columns.id.lt(20))
                                 )
-                                .end
+                                .end.toArray()
 
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id">$1 AND public."user"."id"<$2')
         expect(params).toEqual(expect.arrayContaining([10,20])) 
+    })
+
+    test("should return a set of users based on an IN operator" , () => {
+        const [ sql , params ] = User.select(
+                                     User.columns.username.as('user_name')
+                                 )
+                                 .from()
+                                 .where(
+                                     User.columns.id.in(1,2,4)
+                                 )
+                                 .end.toArray()
+
+        expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IN($1,$2,$3)')
+        expect(params).toEqual(expect.arrayContaining([1,2,4])) 
+    })
+
+    test("should return a set of users based on an ANY operator" , () => {
+        const [ sql , params ] = User.select(
+                                     User.columns.username.as('user_name')
+                                 )
+                                 .from()
+                                 .where(
+                                     User.columns.id.any(1,2,4)
+                                 )
+                                 .end.toArray()
+
+        expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" ANY($1,$2,$3)')
+        expect(params).toEqual(expect.arrayContaining([1,2,4])) 
+    })
+
+    test("should return a set of users based on an ALL operator" , () => {
+        const [ sql , params ] = User.select(
+                                     User.columns.username.as('user_name')
+                                 )
+                                 .from()
+                                 .where(
+                                     User.columns.id.all(1,2,4)
+                                 )
+                                 .end.toArray()
+
+        expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" ALL($1,$2,$3)')
+        expect(params).toEqual(expect.arrayContaining([1,2,4])) 
+    })
+
+    test("should return a set of users based on a NOT IN operator" , () => {
+        const [ sql , params ] = User.select(
+                                     User.columns.username.as('user_name')
+                                 )
+                                 .from()
+                                 .where(
+                                     User.columns.id.notIn(1,2,4)
+                                 )
+                                 .end.toArray()
+
+        expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" NOT IN($1,$2,$3)')
+        expect(params).toEqual(expect.arrayContaining([1,2,4])) 
     })
 
 })

@@ -10,6 +10,15 @@ import _deleteFrom from './Syntax/PgSql/deleteFrom';
 import _where from './Syntax/PgSql/where'
 import Column from './Column'
 
+const Response = function({ sql , params }){
+    this._sql = sql
+    this._params = params
+}
+
+Response.prototype.toArray = function(){
+    return [ this._sql , this._params ]
+}
+
 const PgSql = function({ table , schema, columns }){
     // Input check
     if(!table) throw new Error('please specify a table')
@@ -45,13 +54,16 @@ PgSql.set = function(param){
 // GETTER -SETTERS
 // end
 const end = function(){
-    const statements = this._statement
-    const params = this._params
+    const  response = new Response({ 
+        sql : this._statement.map( v => v.trim()).join(' ').trim(),
+        params: this._params
+    })
+
     // resets the staement object
     this._statement = []
     this._params = []
 
-    return [ statements.map( v => v.trim()).join(' ').trim() , params ]
+    return response
 }
 
 Object.defineProperty(PgSql.prototype, 'end' , { get: end })
@@ -70,4 +82,4 @@ PgSql.set(_set)
 PgSql.set(_deleteFrom)
 PgSql.set(_where)
 
-export default PgSql
+export { PgSql as default , Response } 
