@@ -3,9 +3,8 @@ import { STATEMENTS } from '../../constants'
 export default (function(){
     return {
         name: STATEMENTS.LT,
-        constructor: function(arg){
-            this._values.push(`${this._fullColName}<`)
-            this._params.push(arg)
+        constructor: function(...arg){
+            return [ this._fullColName + '<' , arg ]
         }
     }
 })()

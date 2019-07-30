@@ -26,7 +26,11 @@ const Column = function({ colName , table, schema}){
 // class method that populates the prototype with methods
 Column.set = function(arg){
     this.prototype[arg.name] = function(...args){
-        arg.constructor.call( this , ...args)
+        const [ value , params  ] = arg.constructor.call( this , ...args)
+        
+        if( value ) this._values.push(value)
+        if( params ) this._params.push(...params)
+        
         return this
     }
 }

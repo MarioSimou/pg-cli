@@ -8,18 +8,11 @@ export default (function(){
 
             switch( nested ){
                 case true:
-                    var [ statement , params ] = args[0]
-                    if( statement )
-                        this._values.push( `${this._fullColName } IN(${statement})`)
-                    if( params.length )
-                        this._params.push(...params)
-                    break;
-                default:
-                    var statement = new Array( args.length ).fill('$').join(',')
-
-                    this._params.push(...args)                        
-                    this._values.push(`${ this._fullColName } IN(${statement})`)
-                    break;
+                        var [ statement , params ] = args[0]
+                        return [ `${this._fullColName } IN(${statement})` , params ]
+                    default:
+                        var statement = new Array( args.length ).fill('$').join(',')
+                        return [ `${ this._fullColName } IN(${statement})` , args ]
             }           
         }
     }
