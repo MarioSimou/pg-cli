@@ -5,23 +5,23 @@ export default (function(){
     return {
         name: STATEMENTS.NOT_IN,
         constructor: function(...args){
-            const isResponse = args.every( arg => arg instanceof Response )
+            const nested = args.some( arg => arg.length === 2 ) 
 
-            switch( isResponse ){
+            switch( nested ){
                 case true:
-                    this._values.push( args[0].toArray()[0] )
-                    this._params.push( args[0].toArray()[1])
-                    return
-                default:
-                    const statement = []
-                    for(let arg of args){
-                        statement.push(`$${this._params.length+1}`)
-                        this._params.push(arg)                        
-                    }
-
-                    this._values.push(`${ this._fullColName } NOT IN(${statement.join(',')})`)
+                    var [ statement , params ] = args[0]
+                    if( statement )
+                        this._values.push( `${this._fullColName } NOT IN(${statement})`)
+                    if( params.length )
+                        this._params.push(...params)
                     break;
-            }
+                default:
+                    var statement = new Array( args.length ).fill('$').join(',')
+
+                    this._params.push(...args)                        
+                    this._values.push(`${ this._fullColName } NOT IN(${statement})`)
+                    break;
+            }  
         }
     }
 })()

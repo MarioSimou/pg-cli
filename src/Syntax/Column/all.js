@@ -1,28 +1,26 @@
 import { STATEMENTS } from '../../constants'
-import { Response } from '../../index'
 
 export default (function(){
     return {
         name: STATEMENTS.ALL,
         constructor: function(...args){
-            const isResponse = args.every( arg => arg instanceof Response )
+            const nested = args.some( arg => arg.length === 2 ) 
 
-            switch( isResponse ){
+            switch( nested ){
                 case true:
-                    var [ statement , params ] = args[0].toArray()
+                    var [ statement , params ] = args[0]
                     if( statement )
                         this._values.push( `${this._fullColName } ALL(${statement})`)
                     if( params.length )
                         this._params.push(...params)
-                    return
+                    break;
                 default:
-                    const n = this._params.length + 1
-                    var statement = args.map( ( _ , i ) => `$${n+i}`).join(',')
+                    var statement = new Array( args.length ).fill('$').join(',')
 
                     this._params.push(...args)                        
                     this._values.push(`${ this._fullColName } ALL(${statement})`)
                     break;
-            }           
+            }          
         }
     }
 })()

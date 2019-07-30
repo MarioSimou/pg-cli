@@ -14,8 +14,7 @@ export default (function(){
                 statements.push(column._fullColName)
             }
 
-            const statement = `SELECT ${statements.join(',') || '*' }`
-            this._statement.push(statement)
+            return [ `SELECT ${statements.join(',') || '*' }` ]
         }
     }
 })()

@@ -23,3 +23,13 @@ export const STATEMENTS = {
     LTE: 'lte'
 }
 
+export const STATEMENT_MAPPING = {
+    select: null,
+    from : null,
+    where : null,
+    update: null ,
+    SET: null,
+    insertInto: null ,
+    values: null,
+    deleteFrom: null
+}

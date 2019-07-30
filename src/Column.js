@@ -17,11 +17,9 @@ const Column = function({ colName , table, schema}){
     this._fullColName = `${schema}."${table}"."${colName}"`   
     this._values = []
     this._params = []
-    this._operators = []
 
-    const getColName = function(){ return this }
-    const getFullColName = function(){ return }
     // getters
+    const getColName = function(){ return this }
     Object.defineProperty( this,  colName , { get : getColName })
 }
 

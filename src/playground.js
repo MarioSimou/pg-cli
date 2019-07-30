@@ -1,8 +1,31 @@
-import pgSQL from './index'
+import Table from './index'
 
-const p1 = new pgSQL({ table : 'user' , schema : 'public', columns: [ 'id', 'username' , 'email'] })
-const p2 = new pgSQL({ table : 'products' , schema: 'public', columns: ['prodName', 'price']})
+const p1 = new Table({ table : 'user' , schema : 'public', columns: [ 'id', 'username' , 'email'] })
+const p2 = new Table({ table : 'products' , schema: 'public', columns: ['prodName', 'price']})
 
+
+console.log(
+  p1.insertInto()
+    .values( 
+        [
+            p1.columns.id.equal(1),
+            p1.columns.username.equal('john'),
+            p1.columns.email.equal('john@gmail.com'),
+        ]
+    )
+    .returning(
+        p1.columns.id,
+        p1.columns.username
+    )
+    .end
+)
+
+// console.log(
+//   p1.select()
+//     .from()
+//     .where( p1.columns.id.equal(1).and( p1.columns.email.unequal('random@gmail.com')) )
+//     .end
+// )
 
 // console.log(
 //   p1.select()
@@ -15,12 +38,16 @@ const p2 = new pgSQL({ table : 'products' , schema: 'public', columns: ['prodNam
 //           .end
 //       )
 //     )
-//     .end.toArray()
+//     .end
 // )
 
 
 // console.log(p1.insertInto({ table : 'user' , schema: 'public'})
-//   .values( [
+// .values( [
+//     p1.columns.username.equal('john'),
+//     p1.columns.email.equal('john@gmail.com'),
+//   ],
+//   [
 //     p1.columns.username.equal('john'),
 //     p1.columns.email.equal('john@gmail.com'),
 //   ]
@@ -46,14 +73,14 @@ const p2 = new pgSQL({ table : 'products' , schema: 'public', columns: ['prodNam
 // )
 
 
-console.log(
-  p1.deleteFrom()
-    .where(
-        p1.columns.email.equal('honathan@email')
-        .or(
-            p1.columns.username.all(
-                p2.select(p2.columns.prodName , p2.columns.price.as('prod_price')).from().where(p2.columns.price.gt(20)).end)
-            )
-        )
-    .end.toArray()
-  )
+// console.log(
+//   p1.deleteFrom()
+//     .where(
+//         p1.columns.email.equal('honathan@email')
+//         .or(
+//             p1.columns.username.all(
+//                 p2.select(p2.columns.prodName , p2.columns.price.as('prod_price')).from().where(p2.columns.price.gt(20)).end)
+//             )
+//         )
+//     .end
+//   )
