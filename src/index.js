@@ -11,6 +11,7 @@ import _where from './Syntax/Table/where'
 import _limit from './Syntax/Table/limit'
 import _offset from './Syntax/Table/offset'
 import _orderBy from './Syntax/Table/orderBy'
+import _groupBy from './Syntax/Table/groupBy'
 import Column from './Column'
 import { STATEMENT_MAPPING } from './constants'
 
@@ -112,5 +113,6 @@ Table.set(_where)
 Table.set(_offset)
 Table.set(_limit)
 Table.set(_orderBy)
+Table.set(_groupBy)
 
 export default Table

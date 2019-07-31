@@ -30,6 +30,13 @@ export const STATEMENTS = {
     ORDER_BY: 'orderBy',
     ASC: 'asc',
     DESC: 'desc',
+    GROUP_BY: 'groupBy',
+    MAX: 'max',
+    MIN: 'min',
+    COUNT: 'count',
+    AVG: 'avg',
+    SUM: 'sum',
+    CAST: 'cast',
 }
 
 export const STATEMENT_MAPPING = {
@@ -41,4 +48,29 @@ export const STATEMENT_MAPPING = {
     insertInto: null ,
     values: null,
     deleteFrom: null
+}
+
+export const DATA_TYPES = {
+  BOOLEAN: 'boolean',
+  CHARACTER: {
+    TEXT:'text',
+    VARCHAR: n => `varchar(${n})`,
+    CHAR: n => `char(${n})`
+  },
+  NUMERIC: {
+    SMALL_INT: 'smallint',
+    INT: 'int',
+    BIG_INT: 'bigint',
+    FLOAT: n => `float(${n})`,
+    REAL: 'real',
+    NUMERIC: (p,s) => `numeric(${p},${s})`
+  },
+  TEMPORAL: {
+    DATE: 'date',
+    TIME: 'time',
+    TIMESTAMP: 'timestamp',
+    TIMESTAMPTZ: 'timestamptz',
+    INTERVAL: 'interval'
+  }
+
 }

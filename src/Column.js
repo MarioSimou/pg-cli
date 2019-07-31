@@ -17,6 +17,12 @@ import _not from './Syntax/Column/not'
 import _null from './Syntax/Column/null'
 import _asc from './Syntax/Column/asc'
 import _desc from './Syntax/Column/desc'
+import _sum from './Syntax/Column/sum'
+import _max from './Syntax/Column/max'
+import _min from './Syntax/Column/min'
+import _avg from './Syntax/Column/avg'
+import _count from './Syntax/Column/count'
+import _cast from './Syntax/Column/cast'
 
 const Column = function({ colName , table, schema}){
     this._colName = colName
@@ -61,5 +67,11 @@ Column.set(_not)
 Column.set(_null)
 Column.set(_desc)
 Column.set(_asc)
+Column.set(_sum)
+Column.set(_min)
+Column.set(_max)
+Column.set(_count)
+Column.set(_avg)
+Column.set(_cast)
 
 export default Column

@@ -542,5 +542,109 @@ describe("Testing OFFSET and LIMIT clauses" , () => {
     expect(sql).toBe('SELECT * FROM public."user" LIMIT $1 OFFSET $2')
     expect(params).toEqual([3,5])
   })
+})
 
+describe('Testing GROUP BY and aggregates' , () => {
+  test("should group the records by username" , () => {
+    const [ sql , params ] = User.select(
+                              User.columns.username
+                            )
+                              .from()
+                              .groupBy(
+                                User.columns.username
+                              )
+                              .end
+    expect(sql).toBe('SELECT public."user"."username" FROM public."user" GROUP BY public."user"."username"')
+    expect(params).toEqual(expect.arrayContaining([]))
+  })
+
+  test("should group the records by username and email" , () => {
+    const [ sql , params ] = User.select(
+                              User.columns.username,
+                              User.columns.email
+                            )
+                              .from()
+                              .groupBy(
+                                User.columns.username,
+                                User.columns.email
+                              )
+                              .end
+    expect(sql).toBe('SELECT public."user"."username",public."user"."email" FROM public."user" GROUP BY public."user"."username",public."user"."email"')
+    expect(params).toEqual(expect.arrayContaining([]))
+  })
+
+  test("should group the offers by name and finds the AVG price" , () => {
+    const [ sql , params ] = Offer.select(
+                              Offer.columns.offer_name,
+                              Offer.columns.price.avg()
+                            )
+                              .from()
+                              .groupBy(
+                                Offer.columns.offer_name
+                              )
+                              .end
+    expect(sql).toBe('SELECT public."offer"."offer_name",AVG(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"')
+    expect(params).toEqual(expect.arrayContaining([]))
+    
+  })
+
+  test("should group the offers by name and finds the SUM price" , () => {
+    const [ sql , params ] = Offer.select(
+                              Offer.columns.offer_name,
+                              Offer.columns.price.sum()
+                            )
+                              .from()
+                              .groupBy(
+                                Offer.columns.offer_name
+                              )
+                              .end
+    expect(sql).toBe('SELECT public."offer"."offer_name",SUM(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"')
+    expect(params).toEqual(expect.arrayContaining([]))
+    
+  })
+
+  test("should group the offers by name and finds the MIN price" , () => {
+    const [ sql , params ] = Offer.select(
+                              Offer.columns.offer_name,
+                              Offer.columns.price.min()
+                            )
+                              .from()
+                              .groupBy(
+                                Offer.columns.offer_name
+                              )
+                              .end
+    expect(sql).toBe('SELECT public."offer"."offer_name",MIN(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"')
+    expect(params).toEqual(expect.arrayContaining([]))
+    
+  })
+
+  test("should group the offers by name and finds the MAX price" , () => {
+    const [ sql , params ] = Offer.select(
+                              Offer.columns.offer_name,
+                              Offer.columns.price.max()
+                            )
+                              .from()
+                              .groupBy(
+                                Offer.columns.offer_name
+                              )
+                              .end
+    expect(sql).toBe('SELECT public."offer"."offer_name",MAX(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"')
+    expect(params).toEqual(expect.arrayContaining([]))
+    
+  })
+
+  test("should group the offers by name and finds the COUNT price" , () => {
+    const [ sql , params ] = Offer.select(
+                              Offer.columns.offer_name,
+                              Offer.columns.price.count()
+                            )
+                              .from()
+                              .groupBy(
+                                Offer.columns.offer_name
+                              )
+                              .end
+    expect(sql).toBe('SELECT public."offer"."offer_name",COUNT(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"')
+    expect(params).toEqual(expect.arrayContaining([]))
+  })
+  
 })

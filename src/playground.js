@@ -1,19 +1,29 @@
 import Table from './index'
+import { DATA_TYPES } from './constants'
 
 const p1 = new Table({ table : 'user' , schema : 'public', columns: [ 'id', 'username' , 'email'] })
 const p2 = new Table({ table : 'products' , schema: 'public', columns: [ 'id', 'prodName', 'price' , 'user_id']})
 
 
 console.log(
-  p1.select()
+  p1.select(
+    p1.columns.username,
+    p1.columns.id.cast(DATA_TYPES.NUMERIC.INT)
+  )
     .from()
-    .where( p1.columns.id.is().not().null())
-    .orderBy(
-      p1.columns.username.asc(),
-      p1.columns.id.desc()
-    ).limit(5)
     .end[0]
 )
+
+// console.log(
+//   p1.select(
+//     p1.columns.id,
+//     p1.columns.username,
+//     p1.columns.email.as('user_email')
+//  ) 
+//  .from()
+//  .end
+// )
+
 // console.log(
 //   p1.insertInto()
 //     .values( 
