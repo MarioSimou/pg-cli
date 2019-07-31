@@ -5,7 +5,7 @@ export default (function(){
         name: STATEMENTS.IN,
         constructor: function(...args){
             const nested = args.some( arg => arg.length === 2 )
-            const hasValues = this._values.length ? '' : this._fullColName 
+            const hasValues = this._commands.length ? '' : this._fullColName 
 
             switch( nested ){
                 case true:

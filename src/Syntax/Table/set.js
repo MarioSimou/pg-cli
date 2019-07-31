@@ -8,7 +8,7 @@ export default (function(){
             
             for(let column of columns){
                 params.push(column._params.pop())
-                statement.push(`${column._values.pop()}$`)
+                statement.push(`${column._commands.pop().value}$`)
             }
 
             return [ `SET ${statement.join(',')}` , params ] 

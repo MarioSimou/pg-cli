@@ -1,4 +1,5 @@
 import Table from '../src/index'
+import { DATA_TYPES } from '../src/constants'
 
 // Instantiates an instance specifically designed for User model
 const User = new Table({ 
@@ -70,6 +71,30 @@ describe( "Tesing Select clause of User Table", () => {
                                      
         expect(sql).toBe('SELECT public."user"."id",public."user"."username",public."user"."email",public."user"."password" FROM public."user" WHERE public."user"."id"=$1')
         expect(params).toEqual(expect.arrayContaining([1]))
+    })
+
+    test("should select the id and username of all users, casting the id to bigint" , () => {
+      const [ sql , params ] = User.select(
+                                  User.columns.id.cast(DATA_TYPES.NUMERIC.BIG_INT),
+                                  User.columns.username
+                               )
+                               .from()
+                               .end
+
+      expect(sql).toBe('SELECT public."user"."id"::bigint,public."user"."username" FROM public."user"')
+      expect(params).toEqual(expect.arrayContaining([]))
+    })
+
+    test("should select the id and username of all users, casting the id to bigint. The id should be renamed to user_id" , () => {
+      const [ sql , params ] = User.select(
+                                  User.columns.id.cast(DATA_TYPES.NUMERIC.BIG_INT).as('user_id'),
+                                  User.columns.username
+                               )
+                               .from()
+                               .end
+
+      expect(sql).toBe('SELECT public."user"."id"::bigint as user_id,public."user"."username" FROM public."user"')
+      expect(params).toEqual(expect.arrayContaining([]))
     })
 })
 

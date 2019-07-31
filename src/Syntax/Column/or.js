@@ -4,7 +4,7 @@ export default (function(){
     return {
         name : STATEMENTS.OR,
         constructor: function(column){
-            return [ `OR ${column._values.pop()}` , [column._params.pop()] ]
+            return [ `OR ${column._commands.pop().value }` , [column._params.pop()] ]
         }
     }
 })()

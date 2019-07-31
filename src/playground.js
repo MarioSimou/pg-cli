@@ -8,7 +8,7 @@ const p2 = new Table({ table : 'products' , schema: 'public', columns: [ 'id', '
 console.log(
   p1.select(
     p1.columns.username,
-    p1.columns.id.cast(DATA_TYPES.NUMERIC.INT)
+    p1.columns.id.cast(DATA_TYPES.NUMERIC.INT).as('user_name')
   )
     .from()
     .end[0]
@@ -45,7 +45,7 @@ console.log(
 // console.log(
 //   p1.select()
 //     .from()
-//     .where( p1.columns.id.matchi('something').and( p1.columns.email.unequal('random@gmail.com')) )
+//     .where( p1.columns.id.equal('something').and( p1.columns.email.unequal('random@gmail.com')) )
 //     .end
 // )
 

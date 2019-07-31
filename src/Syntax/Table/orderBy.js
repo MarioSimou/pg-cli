@@ -4,7 +4,7 @@ export default (function(){
   return {
     name: STATEMENTS.ORDER_BY,
     constructor: function(columns){
-      const statement = columns.map( column => `${column._fullColName} ${column._values.pop()}` ).join(',')
+      const statement = columns.map( column => `${column._fullColName} ${column._commands.pop().value}` ).join(',')
 
       return [ 'ORDER BY ' + statement ]
     }

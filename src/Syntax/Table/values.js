@@ -11,7 +11,7 @@ export default (function(){
                 for(let column of record){
                     if(!columns.has(column._colName)) columns.add(column._colName)
                     
-                    column._values.shift()
+                    column._commands.shift()
                     params.push(column._params.shift())
                     statement.push(`$`)
 

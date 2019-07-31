@@ -27,7 +27,7 @@ import _cast from './Syntax/Column/cast'
 const Column = function({ colName , table, schema}){
     this._colName = colName
     this._fullColName = `${schema}."${table}"."${colName}"`   
-    this._values = []
+    this._commands = []
     this._params = []
 
     // getters
@@ -38,9 +38,9 @@ const Column = function({ colName , table, schema}){
 // class method that populates the prototype with methods
 Column.set = function(arg){
     this.prototype[arg.name] = function(...args){
-        const [ value , params  ] = arg.constructor.call( this , ...args)
+        const [ command , params  ] = arg.constructor.call( this , ...args)
         
-        if( value ) this._values.push(value)
+        if( command ) this._commands.push({ name: arg.name , value: command })
         if( params ) this._params.push(...params)
         
         return this

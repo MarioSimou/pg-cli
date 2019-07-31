@@ -4,7 +4,7 @@ export default (function(){
     return {
         name : STATEMENTS.AS,
         constructor: function(...args){
-            return [ `${this._fullColName} as ${args[0]}` ]
+            return [ `as ${args[0]}` ]
         }
     }
 })()
