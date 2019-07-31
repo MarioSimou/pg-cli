@@ -15,7 +15,6 @@ export const STATEMENTS = {
     UNEQUAL: 'unequal',
     OR: 'or',
     IN: 'in',
-    NOT_IN: 'notIn',
     ANY: 'any',
     GT: 'gt',
     GTE: 'gte',
@@ -24,7 +23,10 @@ export const STATEMENTS = {
     LIMIT: 'limit',
     OFFSET: 'offset',
     MATCH: 'match',
-    MATCHI: 'matchi'
+    MATCHI: 'matchi',
+    IS: 'is',
+    NOT: 'not',
+    NULL: 'null',
 }
 
 export const STATEMENT_MAPPING = {

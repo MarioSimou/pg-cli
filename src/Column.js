@@ -8,11 +8,13 @@ import _lte from './Syntax/Column/lte'
 import _and from './Syntax/Column/and'
 import _or from './Syntax/Column/or'
 import _in from './Syntax/Column/in'
-import _notIn from './Syntax/Column/notIn'
 import _any from './Syntax/Column/any'
 import _all from './Syntax/Column/all'
 import _match from './Syntax/Column/match'
 import _matchi from './Syntax/Column/matchi'
+import _is from './Syntax/Column/is'
+import _not from './Syntax/Column/not'
+import _null from './Syntax/Column/null'
 
 
 const Column = function({ colName , table, schema}){
@@ -49,10 +51,12 @@ Column.set(_lte)
 Column.set(_and)
 Column.set(_or)
 Column.set(_in)
-Column.set(_notIn)
 Column.set(_any)
 Column.set(_all)
 Column.set(_match)
 Column.set(_matchi)
+Column.set(_is)
+Column.set(_not)
+Column.set(_null)
 
 export default Column

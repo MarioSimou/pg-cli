@@ -5,7 +5,7 @@ const p2 = new Table({ table : 'products' , schema: 'public', columns: [ 'id', '
 
 
 console.log(
-  p1.select().from().limit(5)
+  p1.select().from().where( p1.columns.id.is().not().null()).limit(5).end
 )
 // console.log(
 //   p1.insertInto()

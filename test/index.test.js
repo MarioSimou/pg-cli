@@ -375,18 +375,46 @@ describe("Testing WHERE clause with multiple operators" , () => {
         expect(params).toEqual(expect.arrayContaining([1,2,4])) 
     })
 
-    test("should return a set of users based on a NOT IN operator" , () => {
+    test("should return a set of users that IS NOT included in the specified values" , () => {
         const [ sql , params ] = User.select(
                                      User.columns.username.as('user_name')
                                  )
                                  .from()
                                  .where(
-                                     User.columns.id.notIn(1,2,4)
+                                     User.columns.id.not().in(1,2,4)
                                  )
                                  .end
 
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" NOT IN($1,$2,$3)')
         expect(params).toEqual(expect.arrayContaining([1,2,4])) 
+    })
+
+    test("should return a set of users whose id IS NOT NULL" , () => {
+      const [ sql , params ] = User.select(
+                                  User.columns.username.as('user_name')
+                              )
+                              .from()
+                              .where(
+                                  User.columns.id.is().not().null()
+                              )
+                              .end
+
+        expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IS NOT NULL')
+        expect(params).toEqual(expect.arrayContaining([])) 
+    })
+
+    test("should return a set of users whose id IS NULL" , () => {
+      const [ sql , params ] = User.select(
+                                  User.columns.username.as('user_name')
+                              )
+                              .from()
+                              .where(
+                                  User.columns.id.is().null()
+                              )
+                              .end
+
+        expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IS NULL')
+        expect(params).toEqual(expect.arrayContaining([])) 
     })
 
     test("should return a set of users based on a REGEX match" , () => {
