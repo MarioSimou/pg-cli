@@ -3,7 +3,7 @@ export default (function(){
     return {
         name: STATEMENTS.NOT,
         constructor: function(_){
-          return [ this._commands.length ? 'NOT' :  `${this._fullColName} NOT` ]
+          return [ 'NOT' ]
         }
     }
 })()

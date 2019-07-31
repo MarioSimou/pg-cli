@@ -4,7 +4,7 @@ export default (function(){
     return {
         name: STATEMENTS.GT,
         constructor: function(...arg){
-            return [ this._fullColName + '>' , arg ]
+            return [ '>' , arg ]
         }
     }
 })()

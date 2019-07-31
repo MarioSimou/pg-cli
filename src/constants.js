@@ -37,17 +37,7 @@ export const STATEMENTS = {
     AVG: 'avg',
     SUM: 'sum',
     CAST: 'cast',
-}
-
-export const STATEMENT_MAPPING = {
-    select: null,
-    from : null,
-    where : null,
-    update: null ,
-    SET: null,
-    insertInto: null ,
-    values: null,
-    deleteFrom: null
+    HAVING: 'having',
 }
 
 export const DATA_TYPES = {

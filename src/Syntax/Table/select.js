@@ -19,7 +19,6 @@ export default (function(){
                   
                   // check for cast operator
                   switch(command.name){
-                    case STATEMENTS.MATCH:
                     case STATEMENTS.AS:
                         statements.push( column._fullColName + ' ' + command.value )
                         break;

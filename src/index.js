@@ -12,8 +12,8 @@ import _limit from './Syntax/Table/limit'
 import _offset from './Syntax/Table/offset'
 import _orderBy from './Syntax/Table/orderBy'
 import _groupBy from './Syntax/Table/groupBy'
+import _having from './Syntax/Table/having'
 import Column from './Column'
-import { STATEMENT_MAPPING } from './constants'
 
 const Table = function({ table , schema, columns }){
     // Input check
@@ -27,7 +27,25 @@ const Table = function({ table , schema, columns }){
     if(!typeof(colums) instanceof Array) 
         throw new Error('columns should be table')
 
-    this._statement = STATEMENT_MAPPING
+    // each instance has its own statement object
+    this._statement = {
+        select: null,
+        from : null,
+        where : null,
+        update: null ,
+        set: null,
+        insertInto: null ,
+        values: null,
+        deleteFrom: null,
+        having: null,
+        groupBy: null,
+        orderBy: null,
+        all: null,
+        limit: null,
+        offset: null,
+        returning: null,
+    }
+
     this._params = []
     this._monitor = []
     this._table = table
@@ -114,5 +132,6 @@ Table.set(_offset)
 Table.set(_limit)
 Table.set(_orderBy)
 Table.set(_groupBy)
+Table.set(_having)
 
 export default Table

@@ -1,4 +1,4 @@
-import { STATEMENTS , COMMANDS } from '../../constants'  
+import { STATEMENTS } from '../../constants'  
 
 export default (function(){
     return {
@@ -19,23 +19,38 @@ export default (function(){
                 // if a value does not exist, skip the iteration
                 if( !command.value ) continue
 
-                // if the last character of value is = 
+                // if the last character of value is =
+                let s; 
                 switch(command.name){
-                  case STATEMENTS.EQUAL:
-                  case STATEMENTS.UNEQUAL:
-                  case STATEMENTS.LT:
-                  case STATEMENTS.LTE:
-                  case STATEMENTS.GT:
-                  case STATEMENTS.GTE:
-                  case STATEMENTS.MATCH:
-                  case STATEMENTS.MATCHI:
-                  case STATEMENTS.AND:
-                  case STATEMENTS.OR:
-                      statements.push( command.value + '$' )
-                      break;
-                  default:
-                      statements.push( command.value)
+                case STATEMENTS.ALL:
+                case STATEMENTS.ANY:
+                case STATEMENTS.IN:
+                case STATEMENTS.IS:
+                case STATEMENTS.NOT:
+                case STATEMENTS.NULL:
+                  if(i == 0) s = column._fullColName + ' ' + command.value 
+                  else s = command.value
+                  break;
+                case STATEMENTS.AND:
+                case STATEMENTS.OR:
+                  s = command.value + '$' 
+                  break;
+                case STATEMENTS.EQUAL:
+                case STATEMENTS.UNEQUAL:
+                case STATEMENTS.LT:
+                case STATEMENTS.LTE:
+                case STATEMENTS.GT:
+                case STATEMENTS.GTE:
+                case STATEMENTS.MATCH:
+                case STATEMENTS.MATCHI:
+                  s = column._fullColName + command.value + '$'
+                  break;
+                default:
+                  s = column._fullColName + command.value
+                  break;
                 } 
+
+                statements.push(s)
             }           
 
             return [ `WHERE ${statements.join(' ')}` , params ]

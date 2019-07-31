@@ -569,7 +569,7 @@ describe("Testing OFFSET and LIMIT clauses" , () => {
   })
 })
 
-describe('Testing GROUP BY and aggregates' , () => {
+describe('Testing GROUP BY, HAVING and aggregation functions' , () => {
   test("should group the records by username" , () => {
     const [ sql , params ] = User.select(
                               User.columns.username
@@ -671,5 +671,69 @@ describe('Testing GROUP BY and aggregates' , () => {
     expect(sql).toBe('SELECT public."offer"."offer_name",COUNT(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"')
     expect(params).toEqual(expect.arrayContaining([]))
   })
-  
+
+  test("should group the users by username, returning only those who have an id higher than 5" , () => {
+    const [ sql , params ] = User.select(
+                              User.columns.username,
+                              User.columns.id.sum()
+                            )
+                            .from()
+                            .groupBy(
+                              User.columns.username
+                            )
+                            .having(
+                              User.columns.id.sum().gt(5)
+                            )
+                            .end
+
+    expect(sql).toBe('SELECT public."user"."username",SUM(public."user"."id") FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id")>$1')
+    expect(params).toEqual(expect.arrayContaining([5]))
+    
+  })
+
+  test("should group the users by username, returning only those who have an id higher than 5" , () => {
+    const [ sql , params ] = User.select(
+                              User.columns.username,
+                              User.columns.id.sum()
+                            )
+                            .from()
+                            .groupBy(
+                              User.columns.username
+                            )
+                            .having(
+                              User.columns.id.sum().gt(5).and(
+                                User.columns.id.sum().lt(20)
+                              )
+                            )
+                            .end
+
+    expect(sql).toBe('SELECT public."user"."username",SUM(public."user"."id") FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id")>$1 AND SUM(public."user"."id")<$2')
+    expect(params).toEqual(expect.arrayContaining([5, 20]))
+    
+  })
+
+  test('should group the users by username, returning only those whose id is not null' , () => {
+    const [ sql , params ]  = User.select(
+                                User.columns.username,
+                                User.columns.id.sum()
+                              )
+                              .from()
+                              .groupBy( 
+                                User.columns.username
+                              )
+                              .having(
+                                User.columns.id.sum().in(
+                                  Offer.select(
+                                    Offer.columns.id
+                                  ).from().where(
+                                    Offer.columns.id.is().not().null()
+                                  ).end
+                                )
+                              )
+                              .end
+
+    expect(sql).toBe(`SELECT public."user"."username",SUM(public."user"."id") FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id") IN(SELECT public."offer"."id" FROM public."offer" WHERE public."offer"."id" IS NOT NULL)`)
+    expect(params).toEqual(expect.arrayContaining([]))
+  })
+
 })
