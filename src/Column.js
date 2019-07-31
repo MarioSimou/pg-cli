@@ -11,6 +11,9 @@ import _in from './Syntax/Column/in'
 import _notIn from './Syntax/Column/notIn'
 import _any from './Syntax/Column/any'
 import _all from './Syntax/Column/all'
+import _match from './Syntax/Column/match'
+import _matchi from './Syntax/Column/matchi'
+
 
 const Column = function({ colName , table, schema}){
     this._colName = colName
@@ -49,5 +52,7 @@ Column.set(_in)
 Column.set(_notIn)
 Column.set(_any)
 Column.set(_all)
+Column.set(_match)
+Column.set(_matchi)
 
 export default Column

@@ -1,7 +1,7 @@
-import PgSQL from '../src/index'
+import Table from '../src/index'
 
 // Instantiates an instance specifically designed for User model
-const User = new PgSQL({ 
+const User = new Table({ 
     table : 'user' , 
     schema: 'public',
     columns: [
@@ -11,6 +11,17 @@ const User = new PgSQL({
         'password',
         'role'
     ]
+})
+
+const Offer = new Table({
+  table: 'offer',
+  schema: 'public',
+  columns: [
+    'id',
+    'offer_name',
+    'price',
+    'user_id'
+  ]
 })
 
 describe( "Tesing Select clause of User Table", () => {
@@ -251,7 +262,7 @@ describe("Testing WHERE clause with multiple operators" , () => {
         expect(params).toEqual(expect.arrayContaining(['basic','edit'])) 
     })
 
-    test("should return a set of users with id greter than 10" , () => {
+    test("should return a set of users with id greater than 10" , () => {
         const [ sql , params ] = User.select(
                                     User.columns.username.as('user_name')
                                 )
@@ -377,5 +388,90 @@ describe("Testing WHERE clause with multiple operators" , () => {
         expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" NOT IN($1,$2,$3)')
         expect(params).toEqual(expect.arrayContaining([1,2,4])) 
     })
+
+    test("should return a set of users based on a REGEX match" , () => {
+      const [ sql , params ] = User.select(
+                                   User.columns.username.as('user_name')
+                               )
+                               .from()
+                               .where(
+                                   User.columns.username.match('^j.*')
+                               )
+                               .end
+
+      expect(sql).toBe(`SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."username"~$1`)
+      expect(params).toEqual(expect.arrayContaining(['^j.*'])) 
+  })
+
+    test("should return a set of users based on a REGEX, case insensitive match" , () => {
+      const [ sql , params ] = User.select(
+                                  User.columns.username.as('user_name')
+                              )
+                              .from()
+                              .where(
+                                  User.columns.username.matchi('^J.*')
+                              )
+                              .end
+
+      expect(sql).toBe(`SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."username"~*$1`)
+      expect(params).toEqual(expect.arrayContaining(['^J.*'])) 
+    })
+
+    test('should return a set of users based on a subquery in the WHERE clause' , () => {
+      const [ sql , params ] = User.select(
+                                  User.columns.id,
+                                  User.columns.username.as('user_name')
+                                )
+                                .from()
+                                .where(
+                                  User.columns.id.in(
+                                    Offer.select(
+                                      Offer.columns.user_id
+                                    )
+                                    .from()
+                                    .where(
+                                      Offer.columns.id.in(1,2,3)
+                                    )
+                                    .end
+                                  )
+                                )
+                                .end
+
+      expect(sql).toBe('SELECT public."user"."id",public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IN(SELECT public."offer"."user_id" FROM public."offer" WHERE public."offer"."id" IN($1,$2,$3))')
+      expect(params).toEqual(expect.arrayContaining([1,2,3]))
+    })
+})
+
+describe("Testing OFFSET and LIMIT clauses" , () => {
+  test("should limit the returned subset to 5 records" , () => {
+    const [ sql , params ] = User.select()
+                                 .from()
+                                 .limit(5)
+                                 .end
+
+    expect(sql).toBe('SELECT * FROM public."user" LIMIT $1')
+    expect(params).toEqual([5])
+  })
+
+  test("should offset the returned subset by 5 records" , () => {
+    const [ sql , params ] = User.select()
+                                 .from()
+                                 .offset(5)
+                                 .end
+
+    expect(sql).toBe('SELECT * FROM public."user" OFFSET $1')
+    expect(params).toEqual([5])
+  })
+
+  test("should offset the returned subset by 5 records and limit it to 3 records" , () => {
+    const [ sql , params ] = User.select()
+                                 .from()
+                                 .limit(3)
+                                 .offset(5)
+                                 .end
+
+    expect(sql).toBe('SELECT * FROM public."user" LIMIT $1 OFFSET $2')
+    expect(params).toEqual([3,5])
+  })
 
 })

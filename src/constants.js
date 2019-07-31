@@ -20,7 +20,11 @@ export const STATEMENTS = {
     GT: 'gt',
     GTE: 'gte',
     LT: 'lt',
-    LTE: 'lte'
+    LTE: 'lte',
+    LIMIT: 'limit',
+    OFFSET: 'offset',
+    MATCH: 'match',
+    MATCHI: 'matchi'
 }
 
 export const STATEMENT_MAPPING = {

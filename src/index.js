@@ -8,6 +8,8 @@ import _update from './Syntax/Table/update'
 import _set from './Syntax/Table/set'
 import _deleteFrom from './Syntax/Table/deleteFrom';
 import _where from './Syntax/Table/where'
+import _limit from './Syntax/Table/limit'
+import _offset from './Syntax/Table/offset'
 import Column from './Column'
 import { STATEMENT_MAPPING } from './constants'
 
@@ -70,7 +72,7 @@ const end = function(){
         } 
 
         const s = [] 
-        q = q.replace(/[$]\d+/ , '$') // removes any nested parametrized queries
+        q = q.replace(/[$]\d+/g , '$') // removes any nested parametrized queries
 
         for(let l of q.split('')){
             if(regex.test(l)) {
@@ -106,5 +108,7 @@ Table.set(_update)
 Table.set(_set)
 Table.set(_deleteFrom)
 Table.set(_where)
+Table.set(_offset)
+Table.set(_limit)
 
 export default Table

@@ -20,12 +20,20 @@ export default (function(){
                 if( !value ) continue
 
                 // if the last character of value is = 
-                if( /(=|<|>|<=|>=)/.test(value.slice(-1)) ){
-                    statements.push( value + '$' )
-                } else {
-                    statements.push(value)
-                }
-            }            
+                switch(value.slice(-1)){
+                  case '=':
+                  case '<':
+                  case '>':
+                  case '<=':
+                  case '>=':
+                  case '~':
+                  case '*':
+                      statements.push( value + '$' )
+                      break;
+                  default:
+                      statements.push(value)
+                } 
+            }           
 
             return [ `WHERE ${statements.join(' ')}` , params ]
         }
