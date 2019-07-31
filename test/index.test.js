@@ -470,6 +470,47 @@ describe("Testing WHERE clause with multiple operators" , () => {
     })
 })
 
+describe('Testing ORDER BY clause', () => {
+  test("should sort the records with an ascending order based on the username" , () => {
+    const [ sql , params ] = User.select()
+                                 .from()
+                                 .orderBy(
+                                   User.columns.username.asc()
+                                 )
+                                 .end
+
+    expect(sql).toBe('SELECT * FROM public."user" ORDER BY public."user"."username" ASC')
+    expect(params).toEqual(expect.arrayContaining([]))
+  })
+
+  test("should sort the records with a descending order based on the username" , () => {
+    const [ sql , params ] = User.select()
+                                 .from()
+                                 .orderBy(
+                                   User.columns.username.desc()
+                                 )
+                                 .end
+
+    expect(sql).toBe('SELECT * FROM public."user" ORDER BY public."user"."username" DESC')
+    expect(params).toEqual(expect.arrayContaining([]))
+  })
+
+  test("should sort the records based on the username and id" , () => {
+    const [ sql , params ] = User.select()
+                                 .from()
+                                 .orderBy(
+                                   User.columns.username.asc(),
+                                   User.columns.id.desc()
+                                 )
+                                 .end
+
+    expect(sql).toBe('SELECT * FROM public."user" ORDER BY public."user"."username" ASC,public."user"."id" DESC')
+    expect(params).toEqual(expect.arrayContaining([]))
+  })
+
+})
+
+
 describe("Testing OFFSET and LIMIT clauses" , () => {
   test("should limit the returned subset to 5 records" , () => {
     const [ sql , params ] = User.select()

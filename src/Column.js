@@ -15,7 +15,8 @@ import _matchi from './Syntax/Column/matchi'
 import _is from './Syntax/Column/is'
 import _not from './Syntax/Column/not'
 import _null from './Syntax/Column/null'
-
+import _asc from './Syntax/Column/asc'
+import _desc from './Syntax/Column/desc'
 
 const Column = function({ colName , table, schema}){
     this._colName = colName
@@ -58,5 +59,7 @@ Column.set(_matchi)
 Column.set(_is)
 Column.set(_not)
 Column.set(_null)
+Column.set(_desc)
+Column.set(_asc)
 
 export default Column

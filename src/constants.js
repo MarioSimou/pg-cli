@@ -27,6 +27,9 @@ export const STATEMENTS = {
     IS: 'is',
     NOT: 'not',
     NULL: 'null',
+    ORDER_BY: 'orderBy',
+    ASC: 'asc',
+    DESC: 'desc',
 }
 
 export const STATEMENT_MAPPING = {

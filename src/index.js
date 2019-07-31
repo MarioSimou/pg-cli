@@ -10,6 +10,7 @@ import _deleteFrom from './Syntax/Table/deleteFrom';
 import _where from './Syntax/Table/where'
 import _limit from './Syntax/Table/limit'
 import _offset from './Syntax/Table/offset'
+import _orderBy from './Syntax/Table/orderBy'
 import Column from './Column'
 import { STATEMENT_MAPPING } from './constants'
 
@@ -110,5 +111,6 @@ Table.set(_deleteFrom)
 Table.set(_where)
 Table.set(_offset)
 Table.set(_limit)
+Table.set(_orderBy)
 
 export default Table

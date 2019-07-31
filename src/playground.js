@@ -5,7 +5,14 @@ const p2 = new Table({ table : 'products' , schema: 'public', columns: [ 'id', '
 
 
 console.log(
-  p1.select().from().where( p1.columns.id.is().not().null()).limit(5).end
+  p1.select()
+    .from()
+    .where( p1.columns.id.is().not().null())
+    .orderBy(
+      p1.columns.username.asc(),
+      p1.columns.id.desc()
+    ).limit(5)
+    .end[0]
 )
 // console.log(
 //   p1.insertInto()
