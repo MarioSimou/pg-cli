@@ -7,8 +7,12 @@ export default (function(){
             const statement = [] , params = []
             
             for(let column of columns){
-                params.push(column._params.pop())
-                statement.push(`${column._fullColName}${column._commands.pop().value}$`)
+                const param = column._params.pop()  
+                const [ value ] = Array.from( column._commands.values() ) 
+
+                params.push( param )
+                statement.push( column._fullColName + value + `$`)
+                column._flush()
             }
 
             return [ `SET ${statement.join(',')}` , params ] 

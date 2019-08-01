@@ -236,55 +236,56 @@ describe("Testing DELETE DML of User table", () => {
     })
 })
 
-describe("Testing WHERE clause with multiple operators" , () => {
-    test("should select a user based on his/her id" , () => {
-        const [ sql , params ] = User.select(
-                                    User.columns.id,
-                                    User.columns.username.as('user_name'),
-                                )
-                                .from()
-                                .where(
-                                    User.columns.id.equal(1)
-                                )
-                                .end
 
-        expect(sql).toBe('SELECT public."user"."id",public."user"."username" as user_name FROM public."user" WHERE public."user"."id"=$1')
-        expect(params).toEqual(expect.arrayContaining([1])) 
-    })
+describe("Testing WHERE clause with multiple operators" , () => {
+
+  test("should select a user based on his/her id" , () => {
+      const [ sql , params ] = User.select(
+                                User.columns.id,
+                                User.columns.username.as('user_name'),
+                            )
+                            .from()
+                            .where(
+                                User.columns.id.equal(1)
+                            )
+                            .end
+
+      expect(sql).toBe('SELECT public."user"."id",public."user"."username" as user_name FROM public."user" WHERE public."user"."id"=$1')
+      expect(params).toEqual(expect.arrayContaining([1])) 
+  })
 
     test("should select a user based on his/her username AND email" , () => {
-        const [ sql , params ] = User.select(
-                                    User.columns.username.as('user_name'),
-                                    User.columns.email.as('user_email'),
+      const [ sql , params ] = User.select(
+                                User.columns.username.as('user_name'),
+                                User.columns.email.as('user_email'),
+                            )
+                            .from()
+                            .where(
+                                User.columns.username.equal('foo')
+                                .and( 
+                                    User.columns.email.equal('foo@gmail.com') 
                                 )
-                                .from()
-                                .where(
-                                    User.columns.username.equal('foo')
-                                    .and( 
-                                        User.columns.email.equal('foo@gmail.com') 
-                                    )
-                                )
-                                .end
-
-        expect(sql).toBe('SELECT public."user"."username" as user_name,public."user"."email" as user_email FROM public."user" WHERE public."user"."username"=$1 AND public."user"."email"=$2')
-        expect(params).toEqual(expect.arrayContaining(['foo','foo@gmail.com'])) 
+                            )
+                            .end
+      expect(sql).toBe('SELECT public."user"."username" as user_name,public."user"."email" as user_email FROM public."user" WHERE public."user"."username"=$1 AND public."user"."email"=$2')
+      expect(params).toEqual(expect.arrayContaining(['foo','foo@gmail.com'])) 
     })
 
-    test("should select a user that has either a basic or edit role" , () => {
-        const [ sql , params ] = User.select(
-                                    User.columns.username.as('user_name')
-                                )
-                                .from()
-                                .where(
-                                    User.columns.role.equal('basic')
-                                    .or(
-                                        User.columns.role.equal('edit')
-                                    )
-                                )
-                                .end
+      test("should select a user that has either a basic or edit role" , () => {
+      const [ sql , params ] = User.select(
+                                  User.columns.username.as('user_name')
+                              )
+                              .from()
+                              .where(
+                                  User.columns.role.equal('basic')
+                                  .or(
+                                      User.columns.role.equal('edit')
+                                  )
+                              )
+                              .end
 
-        expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."role"=$1 OR public."user"."role"=$2')
-        expect(params).toEqual(expect.arrayContaining(['basic','edit'])) 
+      expect(sql).toBe('SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."role"=$1 OR public."user"."role"=$2')
+      expect(params).toEqual(expect.arrayContaining(['basic','edit'])) 
     })
 
     test("should return a set of users with id greater than 10" , () => {

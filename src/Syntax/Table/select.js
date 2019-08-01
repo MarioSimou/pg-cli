@@ -7,33 +7,39 @@ export default (function(){
             const statements = []
             
             for(let column of columns){
-                if(column._commands.length){
-                  let command;
-                  if( column._commands.length){
-                     // we force to has the name of the first command
-                    command = { name: column._commands[0].name , value : column._commands.map(command => command.value ).join(' ') }
-                    column._commands = []
-                  }else{
-                    command = column._commands.pop()
-                  }
-                  
-                  // check for cast operator
-                  switch(command.name){
-                    case STATEMENTS.AS:
-                        statements.push( column._fullColName + ' ' + command.value )
-                        break;
+                const n = column._monitor.length
+                // column without any as or cast commands
+                if( n === 0 ) {
+                  statements.push(column._fullColName)
+                  continue
+                }
+
+                for(let methodName of column._monitor ){
+                  const command = column._commands.get( methodName ).shift() 
+
+                  switch(methodName){
                     case STATEMENTS.CAST:
-                        statements.push( column._fullColName + command.value )
+                        statements.push( column._fullColName + command )
+                        break
+                    case STATEMENTS.AS:
+                        // this will gets the previous command and append it to the existing command 
+                        if( n > 1 ) {
+                          const prev = statements.pop()
+                          statements.push( prev + ' ' + command )
+                        } else {
+                          statements.push( column._fullColName + ' ' + command )
+                        } 
                         break;
                     default:
-                        statements.push(command.value)
-                        break;
+                        statements.push(command)
                   }
-
-                } else {
-                  statements.push(column._fullColName)
                 }
+
             }
+
+            // clears each column - we assume that there is a change for a column to appear more than once
+            columns.forEach( column => column._flush() )
+
 
             return [ `SELECT ${statements.join(',') || '*' }` ]
         }

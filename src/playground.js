@@ -26,20 +26,35 @@ columns: [
 
 console.log(
   User.select(
-    User.columns.username,
-    User.columns.id.sum()
-  )
-  .from()
-  .groupBy(
-    User.columns.username
-  )
-  .having(
-    User.columns.id.sum().gt(5).and(
-      User.columns.id.sum().lt(20)
-    )
-  )
-  .end
+    User.columns.username.as('user_name')
 )
+.from()
+.where(
+    User.columns.role.equal('basic')
+    .or(
+        User.columns.role.equal('edit')
+    )
+)
+.end
+)
+
+
+// console.log(
+//   User.select(
+//     User.columns.username,
+//     User.columns.id.sum()
+//   )
+//   .from()
+//   .groupBy(
+//     User.columns.username
+//   )
+//   .having(
+//     User.columns.id.sum().gt(5).and(
+//       User.columns.id.sum().lt(20)
+//     )
+//   )
+//   .end
+// )
 
 // console.log(
 //   User.select(

@@ -1,39 +1,50 @@
 import { STATEMENTS } from '../../constants'  
 
+const generateQueues = ( c , v , p , m ) => {
+  v.push( ...Array.from( c._commands.values() ).reduce( ( s , command ) => [ ...s , ...command ] , []) )
+  m.push( ...c._monitor.reduce( ( s , method ) => [ ...s , [ method , c._fullColName  ] ] , [])  )
+  p.push( ...c._params )
+  
+  if( c._nestedColumn ) generateQueues( c._nestedColumn , v , p , m )
+  c._flush()
+  return [ v , p , m ]
+}
+
 export default (function(){
     return {
         name: STATEMENTS.WHERE,
         constructor: function(columns){
             const [column] = columns
-            const params = column._params
-            const commands = column._commands
-            const n = column._params.length
-            const m = column._commands.length
-            const nIterations = n > m ? n : m
+            const [ v , p , m ] = generateQueues( column , [] , [] , [] )
+            const n = m.length;
             const statements = []
-            // clears the stacks
-            column._commands = [], column._params = []
 
-            for( let i=0; i < nIterations; i++){
-                const command = commands[i] || {}
+            for( let i=0; i < n; i++){
+                const [ methodName , colName ] = m[i]
+                const value = v[i]
+                
                 // if a value does not exist, skip the iteration
-                if( !command.value ) continue
+                if( !value ) continue
 
                 // if the last character of value is =
-                let s; 
-                switch(command.name){
+                switch(methodName){
                 case STATEMENTS.ALL:
                 case STATEMENTS.ANY:
                 case STATEMENTS.IN:
                 case STATEMENTS.IS:
                 case STATEMENTS.NOT:
                 case STATEMENTS.NULL:
-                  if(i == 0) s = column._fullColName + ' ' + command.value 
-                  else s = command.value
+                  if(i == 0) statements.push( colName + ' ' + value  )
+                  else statements.push( value )
                   break;
                 case STATEMENTS.AND:
                 case STATEMENTS.OR:
-                  s = command.value + '$' 
+                  if( i === n-1 ) {
+                    const prev = statements.pop()
+                    statements.push( value + ' ' + prev )
+                  } else {
+                    statements.push( value )
+                  }
                   break;
                 case STATEMENTS.EQUAL:
                 case STATEMENTS.UNEQUAL:
@@ -43,17 +54,16 @@ export default (function(){
                 case STATEMENTS.GTE:
                 case STATEMENTS.MATCH:
                 case STATEMENTS.MATCHI:
-                  s = column._fullColName + command.value + '$'
+                  statements.push( colName + value + '$' )
                   break;
                 default:
-                  s = column._fullColName + command.value
+                  statements.push( colName + value )
                   break;
                 } 
-
-                statements.push(s)
             }           
 
-            return [ `WHERE ${statements.join(' ')}` , params ]
+
+            return [ `WHERE ${statements.join(' ')}` , p ]
         }
     }
 })()

@@ -24,11 +24,14 @@ import _avg from './Syntax/Column/avg'
 import _count from './Syntax/Column/count'
 import _cast from './Syntax/Column/cast'
 
+
 const Column = function({ colName , table, schema}){
     this._colName = colName
     this._fullColName = `${schema}."${table}"."${colName}"`   
-    this._commands = []
+    this._commands = new Map()
     this._params = []
+    this._monitor = []
+    this._nestedColumn = null
 
     // getters
     const getColName = function(){ return this }
@@ -40,11 +43,23 @@ Column.set = function(arg){
     this.prototype[arg.name] = function(...args){
         const [ command , params  ] = arg.constructor.call( this , ...args)
         
-        if( command ) this._commands.push({ name: arg.name , value: command })
+        // sets an initial array for each method if it does not exist
+        if(!this._commands.get(arg.name)) this._commands.set(arg.name , [] )
+
+        if( command ) this._commands.get( arg.name ).push( command )
         if( params ) this._params.push(...params)
+        
+        this._monitor.push( arg.name )
         
         return this
     }
+}
+
+Column.prototype._flush = function(){
+  this._commands = new Map()
+  this._nestedColumn = null
+  this._params = []
+  this._monitor = []
 }
 
 // Prototype methods for Column Class

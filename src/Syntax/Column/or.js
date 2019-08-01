@@ -4,7 +4,9 @@ export default (function(){
     return {
         name : STATEMENTS.OR,
         constructor: function(column){
-            return [ `OR ${column._fullColName}${column._commands.pop().value }` , [column._params.pop()] ]
+          if( this._fullColName !== column._fullColName ) this._nestedColumn = column
+
+          return [ 'OR' ] 
         }
     }
 })()

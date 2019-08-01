@@ -1,12 +1,21 @@
 import { STATEMENTS } from '../../constants'
+import { stat } from 'fs';
 
 export default (function(){
   return {
     name: STATEMENTS.ORDER_BY,
     constructor: function(columns){
-      const statement = columns.map( column => `${column._fullColName} ${column._commands.pop().value}` ).join(',')
+      const stack = []
 
-      return [ 'ORDER BY ' + statement ]
+      for(let column of columns){
+        const [ value ] = Array.from(column._commands.values())
+
+        stack.push( column._fullColName + ' ' + value )
+        column._flush()
+      }
+
+
+      return [ 'ORDER BY ' + stack.join(',') ]
     }
   }
 })()
