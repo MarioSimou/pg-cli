@@ -748,4 +748,42 @@ describe('Testing GROUP BY, HAVING and aggregation functions' , () => {
     expect(params).toEqual(expect.arrayContaining([]))
   })
 
+  test("should group offers based on the offer name, returning only those which aggregated price is between 10 to 50" , () => {
+    const [ sql , params ] = Offer.select(
+                              Offer.columns.offer_name,
+                              Offer.columns.price.sum()
+                            )
+                            .from()
+                            .groupBy(
+                              Offer.columns.offer_name
+                            )
+                            .having(
+                              Offer.columns.price.sum().between(10,50)
+                            )
+                            .end
+
+    expect(sql).toBe('SELECT public."offer"."offer_name",SUM(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name" HAVING SUM(public."offer"."price") BETWEEN $1 AND $2')
+    expect(params).toEqual(expect.arrayContaining([10,50]))
+  })
+
+  test("should group offers based on the offer name, returning only those which aggregated price is between 10 to 50 and does not equal 20" , () => {
+    const [ sql , params ] =  Offer.select(
+                                Offer.columns.offer_name,
+                                Offer.columns.price.sum()
+                              )
+                              .from()
+                              .groupBy(
+                                Offer.columns.offer_name
+                              )
+                              .having(
+                                Offer.columns.price.sum().between(10,50).and(
+                                  Offer.columns.price.sum().unequal(20)
+                                )
+                              )
+                              .end
+
+      expect(sql).toBe('SELECT public."offer"."offer_name",SUM(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name" HAVING SUM(public."offer"."price") BETWEEN $1 AND $2 AND SUM(public."offer"."price")<>$3')
+      expect(params).toEqual(expect.arrayContaining([10,50,20]))
+  })
+
 })

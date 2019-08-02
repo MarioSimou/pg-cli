@@ -28,7 +28,8 @@ export default (function(){
                   statements.push( value + '(' + colName + ')' )
                   break;
                 case STATEMENTS.BETWEEN:
-                  statements.push( value + ' $ AND $')
+                  prev = statements.pop()
+                  statements.push( prev + ' ' + value + ' $ AND $')
                   break;   
                 case STATEMENTS.GT:
                 case STATEMENTS.GTE:
@@ -39,18 +40,14 @@ export default (function(){
                   prev = statements.pop()
                   statements.push( prev + value + '$' )
                   break;
-                case STATEMENTS.IN:
-                case STATEMENTS.ALL:
-                case STATEMENTS.ANY:
-                  statements.push( value )
-                  break;
                 case STATEMENTS.AND:
                 case STATEMENTS.OR:
                   prev = statements.pop()
                   statements.push( value , prev  )
                   break;
                 default:
-                  statements.push( value )
+                  prev = statements.pop()
+                  statements.push( prev + ' ' + value )
                   break;
               } 
             }   

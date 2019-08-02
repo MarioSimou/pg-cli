@@ -25,8 +25,18 @@ columns: [
 })
 
 console.log(
-  User.select().from().where(
-    User.columns.id.between(1,10)
+  Offer.select(
+    Offer.columns.offer_name,
+    Offer.columns.price.sum()
+  )
+  .from()
+  .groupBy(
+    Offer.columns.offer_name
+  )
+  .having(
+    Offer.columns.price.sum().between(10,50).and(
+      Offer.columns.price.sum().equal(20)
+    )
   )
   .end
 )
