@@ -1,14 +1,5 @@
 import { STATEMENTS } from '../../constants'  
-
-const generateQueues = ( c , v , p , m ) => {
-  v.push( ...Array.from( c._commands.values() ).reduce( ( s , command ) => [ ...s , ...command ] , []) )
-  m.push( ...c._monitor.reduce( ( s , method ) => [ ...s , [ method , c._fullColName  ] ] , [])  )
-  p.push( ...c._params )
-  
-  if( c._nestedColumn ) generateQueues( c._nestedColumn , v , p , m )
-  c._flush()
-  return [ v , p , m ]
-}
+import { generateQueues } from '../../utils'
 
 export default (function(){
     return {
@@ -45,6 +36,9 @@ export default (function(){
                   } else {
                     statements.push( value )
                   }
+                  break;
+                case STATEMENTS.BETWEEN:
+                  statements.push(  colName + ' ' + value + ' $ AND $')
                   break;
                 case STATEMENTS.EQUAL:
                 case STATEMENTS.UNEQUAL:

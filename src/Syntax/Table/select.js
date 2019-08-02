@@ -30,6 +30,13 @@ export default (function(){
                           statements.push( column._fullColName + ' ' + command )
                         } 
                         break;
+                    case STATEMENTS.SUM:
+                    case STATEMENTS.MAX:
+                    case STATEMENTS.MIN:
+                    case STATEMENTS.AVG:
+                    case STATEMENTS.COUNT:
+                      statements.push( command + '(' + column._fullColName + ')')
+                      break;
                     default:
                         statements.push(command)
                   }

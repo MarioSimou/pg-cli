@@ -494,6 +494,17 @@ describe("Testing WHERE clause with multiple operators" , () => {
       expect(sql).toBe('SELECT public."user"."id",public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IN(SELECT public."offer"."user_id" FROM public."offer" WHERE public."offer"."id" IN($1,$2,$3))')
       expect(params).toEqual(expect.arrayContaining([1,2,3]))
     })
+
+    test("should return a set of users between a certain range" , () => {
+        const [ sql , params ]  = User.select().from().where(
+                                      User.columns.id.between(1,10)
+                                    )
+                                    .end
+        
+        expect(sql).toBe('SELECT * FROM public."user" WHERE public."user"."id" BETWEEN $1 AND $2')
+        expect(params).toEqual(expect.arrayContaining([1,10]))
+                            
+    })
 })
 
 describe('Testing ORDER BY clause', () => {
@@ -692,7 +703,7 @@ describe('Testing GROUP BY, HAVING and aggregation functions' , () => {
     
   })
 
-  test("should group the users by username, returning only those who have an id higher than 5" , () => {
+  test("should group the users by username, returning only those who have an id higher than 5 and less than 20" , () => {
     const [ sql , params ] = User.select(
                               User.columns.username,
                               User.columns.id.sum()

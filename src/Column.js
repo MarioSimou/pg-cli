@@ -23,7 +23,7 @@ import _min from './Syntax/Column/min'
 import _avg from './Syntax/Column/avg'
 import _count from './Syntax/Column/count'
 import _cast from './Syntax/Column/cast'
-
+import _between from './Syntax/Column/between'
 
 const Column = function({ colName , table, schema}){
     this._colName = colName
@@ -88,5 +88,6 @@ Column.set(_max)
 Column.set(_count)
 Column.set(_avg)
 Column.set(_cast)
+Column.set(_between)
 
 export default Column

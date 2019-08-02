@@ -38,6 +38,7 @@ export const STATEMENTS = {
     SUM: 'sum',
     CAST: 'cast',
     HAVING: 'having',
+    BETWEEN: 'between'
 }
 
 export const DATA_TYPES = {

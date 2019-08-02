@@ -25,17 +25,10 @@ columns: [
 })
 
 console.log(
-  User.select(
-    User.columns.username.as('user_name')
-)
-.from()
-.where(
-    User.columns.role.equal('basic')
-    .or(
-        User.columns.role.equal('edit')
-    )
-)
-.end
+  User.select().from().where(
+    User.columns.id.between(1,10)
+  )
+  .end
 )
 
 

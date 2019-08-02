@@ -4,7 +4,7 @@ export default (function(){
   return {
     name : STATEMENTS.AVG,
     constructor: function(){
-        return [ `AVG(${this._fullColName})`]
+        return [ 'AVG' ]
     }
   }
 })()
