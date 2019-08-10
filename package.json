@@ -1,5 +1,5 @@
 {
-  "name": "ph-cli",
+  "name": "pg-sql",
   "version": "1.0.0",
   "description": "This is a PostgreSQL driver for node.js",
   "main": "index.js",
