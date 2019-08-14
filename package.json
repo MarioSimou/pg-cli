@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MarioSimou/pg-cli.git"
+    "url": "git+https://github.com/MarioSimou/pg-sql.git"
   },
   "author": "Marios Simou",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MarioSimou/pg-cli/issues"
+    "url": "https://github.com/MarioSimou/pg-sql/issues"
   },
-  "homepage": "https://github.com/MarioSimou/pg-cli#readme",
+  "homepage": "https://github.com/MarioSimou/pg-sql#readme",
   "dependencies": {
     "pg": "^7.11.0"
   },
