@@ -1,5 +1,5 @@
-import Table from './index'
-import { DATA_TYPES } from './constants'
+import { Table } from './index'
+import { DATA_TYPES } from './utils/constants'
 
 const User = new Table({ 
   table : 'user' , 

@@ -1,4 +1,4 @@
-import { STATEMENTS } from '../../constants'
+import { STATEMENTS } from '../../utils/constants'
 import { stat } from 'fs';
 
 export default (function(){

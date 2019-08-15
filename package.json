@@ -1,7 +1,7 @@
 {
   "name": "pg-sql",
   "version": "1.0.0",
-  "description": "This is a PostgreSQL driver for node.js",
+  "description": "This is a SQL generator specifically designed for PostgreSQL database.",
   "main": "index.js",
   "scripts": {
     "test": "jest --rootDir ./test -w 1",
@@ -17,9 +17,7 @@
     "url": "https://github.com/MarioSimou/pg-sql/issues"
   },
   "homepage": "https://github.com/MarioSimou/pg-sql#readme",
-  "dependencies": {
-    "pg": "^7.11.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",

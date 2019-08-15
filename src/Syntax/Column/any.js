@@ -1,5 +1,4 @@
-import { STATEMENTS } from '../../constants'
-import { Response } from '../../index' 
+import { STATEMENTS } from '../../utils/constants'
 
 export default (function(){
     return {

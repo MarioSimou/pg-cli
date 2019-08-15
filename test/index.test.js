@@ -1,5 +1,5 @@
-import Table from '../src/index'
-import { DATA_TYPES } from '../src/constants'
+import { Table } from '../src/index'
+import { DATA_TYPES } from '../src/utils/constants'
 
 // Instantiates an instance specifically designed for User model
 const User = new Table({ 
