@@ -1,4 +1,4 @@
-import { Table } from '../src/index'
+import { Table } from '../build/index.js'
 import { DATA_TYPES } from '../src/utils/constants'
 
 // Instantiates an instance specifically designed for User model
