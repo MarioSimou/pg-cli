@@ -6,6 +6,9 @@ module.exports = {
         path : __dirname,
         filename: 'index.js'
     },
+    optimization: {
+        namedModules: true
+    },
     mode: 'production',
     target: 'node',
     externals: [webpackExternals()]
