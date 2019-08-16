@@ -1,4 +1,4 @@
-import { Table } from '../build/index.js'
+import { Table } from '../src/index'
 import { DATA_TYPES } from '../src/utils/constants'
 
 // Instantiates an instance specifically designed for User model
@@ -181,7 +181,7 @@ describe("Testing DML Update of User table" , () => {
     test("should update the username of all records" , () => {
         const [ sql , params ] = User.update().set(User.columns.username.equal('foo')).end
 
-        expect(sql).toBe(`UPDATE public."user" SET public."user"."username"=$1`)
+        expect(sql).toBe(`UPDATE public."user" SET username=$1`)
         expect(params).toEqual(expect.arrayContaining(['foo']))
     })
 
@@ -193,7 +193,7 @@ describe("Testing DML Update of User table" , () => {
                                      )
                                      .where(User.columns.id.equal(10))
                                      .end
-        expect(sql).toBe(`UPDATE public."user" SET public."user"."username"=$1,public."user"."email"=$2 WHERE public."user"."id"=$3`)
+        expect(sql).toBe(`UPDATE public."user" SET username=$1,email=$2 WHERE public."user"."id"=$3`)
         expect(params).toEqual(expect.arrayContaining(['foo', 'foo@gmail.com' , 10 ]))
     })
 
@@ -210,7 +210,7 @@ describe("Testing DML Update of User table" , () => {
                                          User.columns.email
                                      )
                                      .end
-        expect(sql).toBe(`UPDATE public."user" SET public."user"."username"=$1,public."user"."email"=$2 WHERE public."user"."id"=$3 RETURNING id,username,email`)
+        expect(sql).toBe(`UPDATE public."user" SET username=$1,email=$2 WHERE public."user"."id"=$3 RETURNING id,username,email`)
         expect(params).toEqual(expect.arrayContaining(['foo', 'foo@gmail.com' , 10 ]))
     })
     

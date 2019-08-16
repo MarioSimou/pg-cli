@@ -9,7 +9,9 @@ const User = new Table({
       'username',
       'email',
       'password',
-      'role'
+      'role',
+      'created_at',
+      'updated_at'
   ]
 })
 
@@ -25,21 +27,25 @@ columns: [
 })
 
 console.log(
-  Offer.select(
-    Offer.columns.offer_name,
-    Offer.columns.price.sum()
-  )
-  .from()
-  .groupBy(
-    Offer.columns.offer_name
-  )
-  .having(
-    Offer.columns.price.sum().between(10,50).and(
-      Offer.columns.price.sum().equal(20)
-    )
-  )
-  .end
+  User.update().set(User.columns.username.equal('foo')).end
 )
+
+// console.log(
+//   Offer.select(
+//     Offer.columns.offer_name,
+//     Offer.columns.price.sum()
+//   )
+//   .from()
+//   .groupBy(
+//     Offer.columns.offer_name
+//   )
+//   .having(
+//     Offer.columns.price.sum().between(10,50).and(
+//       Offer.columns.price.sum().equal(20)
+//     )
+//   )
+//   .end
+// )
 
 
 // console.log(

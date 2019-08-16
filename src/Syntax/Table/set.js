@@ -11,7 +11,7 @@ export default (function(){
                 const [ value ] = Array.from( column._commands.values() ) 
 
                 params.push( param )
-                statement.push( column._fullColName + value + `$`)
+                statement.push( column._colName + value + `$`)
                 column._flush()
             }
 
