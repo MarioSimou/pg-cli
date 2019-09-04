@@ -43,7 +43,7 @@ Column.set = function(arg){
     this.prototype[arg.name] = function(...args){
         const [ command , params  ] = arg.constructor.call( this , ...args)
         
-        // sets an initial array for each method if it does not exist
+        // sets an initial array for a prototype method if it does not exist
         if(!this._commands.get(arg.name)) this._commands.set(arg.name , [] )
 
         if( command ) this._commands.get( arg.name ).push( command )
@@ -89,5 +89,8 @@ Column.set(_count)
 Column.set(_avg)
 Column.set(_cast)
 Column.set(_between)
+
+const snakeToCamelCase = s => s.replace(/[_](\w{1})/g ,  x => x[1].toUpperCase())
+const camelToSnakeCase = s => s.replace(/[A-Z]/g, x => '_' + x.toLowerCase())
 
 export default Column

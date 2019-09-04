@@ -10,24 +10,37 @@ const User = new Table({
       'email',
       'password',
       'role',
+      'is_verified',
       'created_at',
       'updated_at'
   ]
 })
 
-const Offer = new Table({
-table: 'offer',
-schema: 'public',
-columns: [
-  'id',
-  'offer_name',
-  'price',
-  'user_id'
-]
-})
+// const Offer = new Table({
+// table: 'offer',
+// schema: 'public',
+// columns: [
+//   'id',
+//   'offer_name',
+//   'price',
+//   'user_id'
+// ]
+// })
+
+const mapArgsToWhereColumns = ( source , Model ) => Object.entries( source ).reduce( ( m , [k,v] , i ) => {
+  if( i === 0 ) return m.columns[k].equal( v )
+  else return m.and( Model.columns[k].equal( v ) )
+} , Model)
+
+const where = {
+  id: 1
+}
+
 
 console.log(
-  User.update().set(User.columns.username.equal('foo')).end
+  User.columns.is_verified === User.columns.isVerified,
+  User.columns.updated_at === User.columns.updatedAt,
+  User.columns.createdAt === User.columns.created_at
 )
 
 // console.log(

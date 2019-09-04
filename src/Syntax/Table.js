@@ -14,6 +14,7 @@ import _orderBy from './Table/orderBy'
 import _groupBy from './Table/groupBy'
 import _having from './Table/having'
 import Column from './Column'
+import * as util from '../utils'
 
 const Table = function({ table , schema, columns }){
     // Input check
@@ -50,7 +51,15 @@ const Table = function({ table , schema, columns }){
     this._monitor = []
     this._table = table
     this._schema = schema
-    this._columns = columns.reduce((o,column)=> ({ ...o , [column]: new Column({ colName : column , table : this._table, schema: this._schema })}) , {})
+    this._columns = columns.reduce((o,column)=> {
+        o[column] = new Column({ colName : column , table : this._table, schema: this._schema })
+
+        // adds support to camelCase and snake case properties
+        if(column.includes('_')) o[util.snakeToCamelCase(column)] = o[column]
+        else o[util.camelToSnakeCase(column)] = o[column]
+
+        return o
+    }, {})
 }
 
 // Static method used to populate the prototype object of PostgreSQL class
