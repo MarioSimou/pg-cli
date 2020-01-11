@@ -206,12 +206,34 @@ describe("pg-sql", () => {
         ])
         .returning(User.columns.id, User.columns.username).end;
       expect(sql).toBe(
-        `INSERT INTO public."user" (id,username,email,password,role) VALUES ($1,$2,$3,$4,$5) RETURNING id,username`
+        `INSERT INTO public."user" (id,username,email,password,role) VALUES ($1,$2,$3,$4,$5) RETURNING "id","username"`
       );
       expect(params).toEqual(
         expect.arrayContaining([1, "john", "john@gmail.com", "1234", "basic"])
       );
     });
+
+    it("shoyld insert a record returning all columns with their transformed name", () => {
+      const [sql,params] = Offer.insertInto()
+      .values([
+        Offer.columns.id.equal(1),
+        Offer.columns.offerName.equal("test"),
+        Offer.columns.price.equal(1.00),
+        Offer.columns.userId.equal(1)
+      ])
+      .returning(
+        Offer.columns.offerName,
+        Offer.columns.price
+      )
+      .end
+
+      expect(sql).toBe(
+        `INSERT INTO public."offer" (id,offer_name,price,user_id) VALUES ($1,$2,$3,$4) RETURNING "offer_name" as "offerName","price"`
+      )
+      expect(params).toEqual(
+        expect.arrayContaining([1,"test",1.00,1])
+      )
+    })
   });
 
   describe("#Update", () => {
@@ -252,7 +274,7 @@ describe("pg-sql", () => {
           User.columns.email
         ).end;
       expect(sql).toBe(
-        `UPDATE public."user" SET username=$1,email=$2 WHERE public."user"."id"=$3 RETURNING id,username,email`
+        `UPDATE public."user" SET username=$1,email=$2 WHERE public."user"."id"=$3 RETURNING "id","username","email"`
       );
       expect(params).toEqual(
         expect.arrayContaining(["foo", "foo@gmail.com", 10])
