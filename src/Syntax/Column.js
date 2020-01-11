@@ -24,18 +24,21 @@ import _avg from './Column/avg'
 import _count from './Column/count'
 import _cast from './Column/cast'
 import _between from './Column/between'
+import * as utils from '../utils'
 
-const Column = function({ colName , table, schema}){
-    this._colName = colName
-    this._fullColName = `${schema}."${table}"."${colName}"`   
+const getColName = function(){ return this }
+
+const Column = function({ column , table, schema}){
+    this._colName = column.to
+    this._col = column
+    this._fullColName = `${schema}."${table}"."${column.to}"`   
     this._commands = new Map()
     this._params = []
     this._monitor = []
     this._nestedColumn = null
 
     // getters
-    const getColName = function(){ return this }
-    Object.defineProperty( this,  colName , { get : getColName })
+    utils.setGetterProperty(getColName).call(this,column.from) // access in camelcase
 }
 
 // class method that populates the prototype with methods
@@ -89,8 +92,5 @@ Column.set(_count)
 Column.set(_avg)
 Column.set(_cast)
 Column.set(_between)
-
-const snakeToCamelCase = s => s.replace(/[_](\w{1})/g ,  x => x[1].toUpperCase())
-const camelToSnakeCase = s => s.replace(/[A-Z]/g, x => '_' + x.toLowerCase())
 
 export default Column

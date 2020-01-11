@@ -16,17 +16,20 @@ import _having from './Table/having'
 import Column from './Column'
 import * as util from '../utils'
 
-const Table = function({ table , schema, columns }){
-    // Input check
-    if(!table) throw new Error('please specify a table')
-    if(!schema) throw new Error('please specify a schema')
-    if(!columns) throw new Error('please specify columns')
+const hasValidColumnStructure = column => 
+    column instanceof Object && column.from && column.to
 
-    // Input type check
-    if(typeof(table) !== 'string' || typeof(schema) !== 'string') 
-        throw new Error('table and schema should be strings')
-    if(!typeof(colums) instanceof Array) 
-        throw new Error('columns should be table')
+
+const Table = function({ table , schema = 'public', columns }){
+    if(!(this instanceof Table)){
+        return new Table({table, schema, columns})
+    }
+    if(!table || typeof table !== 'string'){
+        throw new Error('please specify a table as a string')
+    }
+    if(!columns.every(hasValidColumnStructure)){
+        throw new Error('please provide a valid column structure')
+    }
 
     // each instance has its own statement object
     this._statement = {
@@ -52,20 +55,26 @@ const Table = function({ table , schema, columns }){
     this._table = table
     this._schema = schema
     this._columns = columns.reduce((o,column)=> {
-        o[column] = new Column({ colName : column , table : this._table, schema: this._schema })
-
-        // adds support to camelCase and snake case properties
-        if(column.includes('_')) o[util.snakeToCamelCase(column)] = o[column]
-        else o[util.camelToSnakeCase(column)] = o[column]
-
+        const col = new Column({ column, table : this._table, schema: this._schema })
+        o[column.to] = col
+        o[column.from] = col 
         return o
     }, {})
+
+    util.setGetterDefaultProperty.call(this,'name', 'table')
+    util.setGetterDefaultProperty.call(this,'schema')
+    util.setGetterDefaultProperty.call(this,'columns')
+    util.setGetterProperty(end).call(this,'end')
 }
 
 // Static method used to populate the prototype object of PostgreSQL class
 Table.set = function(param){
-    if(!param || !param.name || typeof param.name !== 'string' ) throw new Error('not valid type')
-    if(!param || !param.constructor || typeof param.constructor !== 'function' ) throw new Error('no valid type')
+    if(!param || !param.name || typeof param.name !== 'string' ){
+        throw new Error('not valid type')
+    }
+    if(!param || !param.constructor || typeof param.constructor !== 'function' ){
+        throw new Error('no valid type')
+    }
 
     // populates the prototype so all methods to be set when the object is initialized
     this.prototype[param.name] = function(...args){
@@ -85,7 +94,7 @@ Table.set = function(param){
 }
 // GETTER -SETTERS
 // end
-const end = function(){
+function end(){
     const params = this._params
     const monitor = this._monitor
     const statement = new Map(Object.entries(this._statement))
@@ -121,10 +130,6 @@ const end = function(){
 
     return [ f.join(' ')  , params  ]
 }
-
-Object.defineProperty(Table.prototype, 'end' , { get: end })
-Object.defineProperty(Table.prototype, 'columns' , { get: function(){ return this._columns }} )
-
 
 // SQL syntax available for pg-cli
 Table.set(_insertInto)
