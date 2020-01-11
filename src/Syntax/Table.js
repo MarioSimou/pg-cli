@@ -55,7 +55,7 @@ const Table = function({ table , schema = 'public', columns }){
     this._table = table
     this._schema = schema
     this._columns = columns.reduce((o,column)=> {
-        const col = new Column({ colName : column.to , table : this._table, schema: this._schema })
+        const col = new Column({ column, table : this._table, schema: this._schema })
         o[column.to] = col
         o[column.from] = col 
         return o
@@ -69,8 +69,12 @@ const Table = function({ table , schema = 'public', columns }){
 
 // Static method used to populate the prototype object of PostgreSQL class
 Table.set = function(param){
-    if(!param || !param.name || typeof param.name !== 'string' ) throw new Error('not valid type')
-    if(!param || !param.constructor || typeof param.constructor !== 'function' ) throw new Error('no valid type')
+    if(!param || !param.name || typeof param.name !== 'string' ){
+        throw new Error('not valid type')
+    }
+    if(!param || !param.constructor || typeof param.constructor !== 'function' ){
+        throw new Error('no valid type')
+    }
 
     // populates the prototype so all methods to be set when the object is initialized
     this.prototype[param.name] = function(...args){

@@ -28,16 +28,17 @@ import * as utils from '../utils'
 
 const getColName = function(){ return this }
 
-const Column = function({ colName , table, schema}){
-    this._colName = colName
-    this._fullColName = `${schema}."${table}"."${colName}"`   
+const Column = function({ column , table, schema}){
+    this._colName = column.to
+    this._col = column
+    this._fullColName = `${schema}."${table}"."${column.to}"`   
     this._commands = new Map()
     this._params = []
     this._monitor = []
     this._nestedColumn = null
 
     // getters
-    utils.setGetterProperty(getColName).call(this,colName)
+    utils.setGetterProperty(getColName).call(this,column.from) // access in camelcase
 }
 
 // class method that populates the prototype with methods

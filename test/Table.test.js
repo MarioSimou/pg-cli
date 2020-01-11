@@ -65,7 +65,7 @@ describe("pg-sql", () => {
         User.columns.username
       ).from().end;
       expect(sql).toBe(
-        'SELECT public."user"."id",public."user"."username" FROM public."user"'
+        'SELECT public."user"."id" as "id",public."user"."username" as "username" FROM public."user"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -77,7 +77,7 @@ describe("pg-sql", () => {
         User.columns.email.as("user_email")
       ).from().end;
       expect(sql).toBe(
-        'SELECT public."user"."id",public."user"."username",public."user"."email" as user_email FROM public."user"'
+        'SELECT public."user"."id" as "id",public."user"."username" as "username",public."user"."email" as "user_email" FROM public."user"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -93,7 +93,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.equal(1)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."id",public."user"."username",public."user"."email",public."user"."password" FROM public."user" WHERE public."user"."id"=$1'
+        'SELECT public."user"."id" as "id",public."user"."username" as "username",public."user"."email" as "email",public."user"."password" as "password" FROM public."user" WHERE public."user"."id"=$1'
       );
       expect(params).toEqual(expect.arrayContaining([1]));
     });
@@ -105,7 +105,7 @@ describe("pg-sql", () => {
       ).from().end;
 
       expect(sql).toBe(
-        'SELECT public."user"."id"::bigint,public."user"."username" FROM public."user"'
+        'SELECT public."user"."id"::bigint as "id",public."user"."username" as "username" FROM public."user"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -117,7 +117,7 @@ describe("pg-sql", () => {
       ).from().end;
 
       expect(sql).toBe(
-        'SELECT public."user"."id"::bigint as user_id,public."user"."username" FROM public."user"'
+        'SELECT public."user"."id"::bigint as "user_id",public."user"."username" as "username" FROM public."user"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -290,7 +290,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.equal(1)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."id",public."user"."username" as user_name FROM public."user" WHERE public."user"."id"=$1'
+        'SELECT public."user"."id" as "id",public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id"=$1'
       );
       expect(params).toEqual(expect.arrayContaining([1]));
     });
@@ -307,7 +307,7 @@ describe("pg-sql", () => {
             .and(User.columns.email.equal("foo@gmail.com"))
         ).end;
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name,public."user"."email" as user_email FROM public."user" WHERE public."user"."username"=$1 AND public."user"."email"=$2'
+        'SELECT public."user"."username" as "user_name",public."user"."email" as "user_email" FROM public."user" WHERE public."user"."username"=$1 AND public."user"."email"=$2'
       );
       expect(params).toEqual(expect.arrayContaining(["foo", "foo@gmail.com"]));
     });
@@ -320,7 +320,7 @@ describe("pg-sql", () => {
         ).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."role"=$1 OR public."user"."role"=$2'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."role"=$1 OR public."user"."role"=$2'
       );
       expect(params).toEqual(expect.arrayContaining(["basic", "edit"]));
     });
@@ -331,7 +331,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.gt(10)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id">$1'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id">$1'
       );
       expect(params).toEqual(expect.arrayContaining([10]));
     });
@@ -342,7 +342,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.gte(10)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id">=$1'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id">=$1'
       );
       expect(params).toEqual(expect.arrayContaining([10]));
     });
@@ -353,7 +353,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.lt(10)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id"<$1'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id"<$1'
       );
       expect(params).toEqual(expect.arrayContaining([10]));
     });
@@ -364,7 +364,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.lte(10)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id"<=$1'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id"<=$1'
       );
       expect(params).toEqual(expect.arrayContaining([10]));
     });
@@ -375,7 +375,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.gt(10).and(User.columns.id.lt(20))).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id">$1 AND public."user"."id"<$2'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id">$1 AND public."user"."id"<$2'
       );
       expect(params).toEqual(expect.arrayContaining([10, 20]));
     });
@@ -386,7 +386,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.in(1, 2, 4)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IN($1,$2,$3)'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id" IN($1,$2,$3)'
       );
       expect(params).toEqual(expect.arrayContaining([1, 2, 4]));
     });
@@ -397,7 +397,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.any(1, 2, 4)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" ANY($1,$2,$3)'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id" ANY($1,$2,$3)'
       );
       expect(params).toEqual(expect.arrayContaining([1, 2, 4]));
     });
@@ -408,7 +408,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.all(1, 2, 4)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" ALL($1,$2,$3)'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id" ALL($1,$2,$3)'
       );
       expect(params).toEqual(expect.arrayContaining([1, 2, 4]));
     });
@@ -419,7 +419,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.not().in(1, 2, 4)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" NOT IN($1,$2,$3)'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id" NOT IN($1,$2,$3)'
       );
       expect(params).toEqual(expect.arrayContaining([1, 2, 4]));
     });
@@ -435,7 +435,7 @@ describe("pg-sql", () => {
         ).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IS NOT NULL'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id" IS NOT NULL'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -446,7 +446,7 @@ describe("pg-sql", () => {
         .where(User.columns.id.is().null()).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IS NULL'
+        'SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id" IS NULL'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -457,7 +457,7 @@ describe("pg-sql", () => {
         .where(User.columns.username.match("^j.*")).end;
 
       expect(sql).toBe(
-        `SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."username"~$1`
+        `SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."username"~$1`
       );
       expect(params).toEqual(expect.arrayContaining(["^j.*"]));
     });
@@ -468,7 +468,7 @@ describe("pg-sql", () => {
         .where(User.columns.username.matchi("^J.*")).end;
 
       expect(sql).toBe(
-        `SELECT public."user"."username" as user_name FROM public."user" WHERE public."user"."username"~*$1`
+        `SELECT public."user"."username" as "user_name" FROM public."user" WHERE public."user"."username"~*$1`
       );
       expect(params).toEqual(expect.arrayContaining(["^J.*"]));
     });
@@ -488,7 +488,7 @@ describe("pg-sql", () => {
         ).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."id",public."user"."username" as user_name FROM public."user" WHERE public."user"."id" IN(SELECT public."offer"."user_id" FROM public."offer" WHERE public."offer"."id" IN($1,$2,$3))'
+        'SELECT public."user"."id" as "id",public."user"."username" as "user_name" FROM public."user" WHERE public."user"."id" IN(SELECT public."offer"."user_id" as "userId" FROM public."offer" WHERE public."offer"."id" IN($1,$2,$3))'
       );
       expect(params).toEqual(expect.arrayContaining([1, 2, 3]));
     });
@@ -576,7 +576,7 @@ describe("pg-sql", () => {
         .from()
         .groupBy(User.columns.username).end;
       expect(sql).toBe(
-        'SELECT public."user"."username" FROM public."user" GROUP BY public."user"."username"'
+        'SELECT public."user"."username" as "username" FROM public."user" GROUP BY public."user"."username"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -589,7 +589,7 @@ describe("pg-sql", () => {
         .from()
         .groupBy(User.columns.username, User.columns.email).end;
       expect(sql).toBe(
-        'SELECT public."user"."username",public."user"."email" FROM public."user" GROUP BY public."user"."username",public."user"."email"'
+        'SELECT public."user"."username" as "username",public."user"."email" as "email" FROM public."user" GROUP BY public."user"."username",public."user"."email"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -602,7 +602,7 @@ describe("pg-sql", () => {
         .from()
         .groupBy(Offer.columns.offer_name).end;
       expect(sql).toBe(
-        'SELECT public."offer"."offer_name",AVG(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"'
+        'SELECT public."offer"."offer_name" as "offerName",AVG(public."offer"."price") as "price" FROM public."offer" GROUP BY public."offer"."offer_name"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -615,7 +615,7 @@ describe("pg-sql", () => {
         .from()
         .groupBy(Offer.columns.offer_name).end;
       expect(sql).toBe(
-        'SELECT public."offer"."offer_name",SUM(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"'
+        'SELECT public."offer"."offer_name" as "offerName",SUM(public."offer"."price") as "price" FROM public."offer" GROUP BY public."offer"."offer_name"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -628,7 +628,7 @@ describe("pg-sql", () => {
         .from()
         .groupBy(Offer.columns.offer_name).end;
       expect(sql).toBe(
-        'SELECT public."offer"."offer_name",MIN(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"'
+        'SELECT public."offer"."offer_name" as "offerName",MIN(public."offer"."price") as "price" FROM public."offer" GROUP BY public."offer"."offer_name"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -641,7 +641,7 @@ describe("pg-sql", () => {
         .from()
         .groupBy(Offer.columns.offer_name).end;
       expect(sql).toBe(
-        'SELECT public."offer"."offer_name",MAX(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"'
+        'SELECT public."offer"."offer_name" as "offerName",MAX(public."offer"."price") as "price" FROM public."offer" GROUP BY public."offer"."offer_name"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -654,7 +654,7 @@ describe("pg-sql", () => {
         .from()
         .groupBy(Offer.columns.offer_name).end;
       expect(sql).toBe(
-        'SELECT public."offer"."offer_name",COUNT(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name"'
+        'SELECT public."offer"."offer_name" as "offerName",COUNT(public."offer"."price") as "price" FROM public."offer" GROUP BY public."offer"."offer_name"'
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -669,7 +669,7 @@ describe("pg-sql", () => {
         .having(User.columns.id.sum().gt(5)).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username",SUM(public."user"."id") FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id")>$1'
+        'SELECT public."user"."username" as "username",SUM(public."user"."id") as "id" FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id")>$1'
       );
       expect(params).toEqual(expect.arrayContaining([5]));
     });
@@ -689,7 +689,7 @@ describe("pg-sql", () => {
         ).end;
 
       expect(sql).toBe(
-        'SELECT public."user"."username",SUM(public."user"."id") FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id")>$1 AND SUM(public."user"."id")<$2'
+        'SELECT public."user"."username" as "username",SUM(public."user"."id") as "id" FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id")>$1 AND SUM(public."user"."id")<$2'
       );
       expect(params).toEqual(expect.arrayContaining([5, 20]));
     });
@@ -715,7 +715,7 @@ describe("pg-sql", () => {
         ).end;
 
       expect(sql).toBe(
-        `SELECT public."user"."username",SUM(public."user"."id") FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id") IN(SELECT public."offer"."id" FROM public."offer" WHERE public."offer"."id" IS NOT NULL)`
+        `SELECT public."user"."username" as "username",SUM(public."user"."id") as "id" FROM public."user" GROUP BY public."user"."username" HAVING SUM(public."user"."id") IN(SELECT public."offer"."id" as "id" FROM public."offer" WHERE public."offer"."id" IS NOT NULL)`
       );
       expect(params).toEqual(expect.arrayContaining([]));
     });
@@ -730,7 +730,7 @@ describe("pg-sql", () => {
         .having(Offer.columns.price.sum().between(10, 50)).end;
 
       expect(sql).toBe(
-        'SELECT public."offer"."offer_name",SUM(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name" HAVING SUM(public."offer"."price") BETWEEN $1 AND $2'
+        'SELECT public."offer"."offer_name" as "offerName",SUM(public."offer"."price") as "price" FROM public."offer" GROUP BY public."offer"."offer_name" HAVING SUM(public."offer"."price") BETWEEN $1 AND $2'
       );
       expect(params).toEqual(expect.arrayContaining([10, 50]));
     });
@@ -750,7 +750,7 @@ describe("pg-sql", () => {
         ).end;
 
       expect(sql).toBe(
-        'SELECT public."offer"."offer_name",SUM(public."offer"."price") FROM public."offer" GROUP BY public."offer"."offer_name" HAVING SUM(public."offer"."price") BETWEEN $1 AND $2 AND SUM(public."offer"."price")<>$3'
+        'SELECT public."offer"."offer_name" as "offerName",SUM(public."offer"."price") as "price" FROM public."offer" GROUP BY public."offer"."offer_name" HAVING SUM(public."offer"."price") BETWEEN $1 AND $2 AND SUM(public."offer"."price")<>$3'
       );
       expect(params).toEqual(expect.arrayContaining([10, 50, 20]));
     });
