@@ -6,14 +6,50 @@ describe("pg-sql", () => {
   const User = new Table({
     table: "user",
     schema: "public",
-    columns: ["id", "username", "email", "password", "role"]
+    columns: [
+      {from:'id', to:'id'},
+      {from:'username', to: 'username'},
+      {from: 'email', to: 'email'},
+      {from: 'password', to: 'password'},
+      {from: 'role', to: 'role'}
+    ]
   });
 
   const Offer = new Table({
     table: "offer",
     schema: "public",
-    columns: ["id", "offer_name", "price", "user_id"]
+    columns: [
+      {from: 'id', to: 'id'},
+      {from: 'offerName',  to: 'offer_name'},
+      {from: 'price', to: 'price'},
+      {from: 'userId', to: 'user_id'},
+    ]
   });
+
+  describe("#constructor", () => {
+    const table = 'test'
+    const schema = 'public'
+    const columns = [{from: 'id', to: 'id'}]
+
+    it('should handle by default an initiation without the new keyword', () => {
+      const t = Table({table,schema,columns})
+      expect(t instanceof Table).toBeTruthy()
+    })
+    it('should throw an error if the table argument is not passed', () => {
+      const t = () => new Table({schema,columns})
+      expect(t).toThrowError('please specify a table as a string')
+    })
+
+    it('should throw an error if the columns argument has not a valid structure', () => {
+      const t = () => new Table({table,schema,columns: [{}]})
+      expect(t).toThrowError('please provide a valid column structure')
+    })
+    it('should default the schema to public if not provided', () => {
+      const t = new Table({table,columns})
+      expect(t instanceof Table).toBeTruthy()
+      expect(t.schema).toBe('public')
+    })
+  })
 
   describe("#Select", () => {
     it("should select all records from User model", () => {

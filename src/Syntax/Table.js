@@ -16,18 +16,20 @@ import _having from './Table/having'
 import Column from './Column'
 import * as util from '../utils'
 
+const hasValidColumnStructure = column => 
+    column instanceof Object && column.from && column.to
 
-const Table = function({ table , schema, columns }){
-    // Input check
-    if(!table) throw new Error('please specify a table')
-    if(!schema) throw new Error('please specify a schema')
-    if(!columns) throw new Error('please specify columns')
 
-    // Input type check
-    if(typeof(table) !== 'string' || typeof(schema) !== 'string') 
-        throw new Error('table and schema should be strings')
-    if(!typeof(colums) instanceof Array) 
-        throw new Error('columns should be table')
+const Table = function({ table , schema = 'public', columns }){
+    if(!(this instanceof Table)){
+        return new Table({table, schema, columns})
+    }
+    if(!table || typeof table !== 'string'){
+        throw new Error('please specify a table as a string')
+    }
+    if(!columns.every(hasValidColumnStructure)){
+        throw new Error('please provide a valid column structure')
+    }
 
     // each instance has its own statement object
     this._statement = {
@@ -53,15 +55,14 @@ const Table = function({ table , schema, columns }){
     this._table = table
     this._schema = schema
     this._columns = columns.reduce((o,column)=> {
-        o[column] = new Column({ colName : column , table : this._table, schema: this._schema })
-
-        // adds support to camelCase and snake case properties
-        if(column.includes('_')) o[util.snakeToCamelCase(column)] = o[column]
-        else o[util.camelToSnakeCase(column)] = o[column]
-
+        const col = new Column({ colName : column.to , table : this._table, schema: this._schema })
+        o[column.to] = col
+        o[column.from] = col 
         return o
     }, {})
 
+    util.setGetterDefaultProperty.call(this,'name', 'table')
+    util.setGetterDefaultProperty.call(this,'schema')
     util.setGetterDefaultProperty.call(this,'columns')
     util.setGetterProperty(end).call(this,'end')
 }

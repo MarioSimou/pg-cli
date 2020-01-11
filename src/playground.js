@@ -5,60 +5,52 @@ const User = new Table({
   table : 'user' , 
   schema: 'public',
   columns: [
-      'id',
-      'username',
-      'email',
-      'password',
-      'role',
-      'is_verified',
-      'created_at',
-      'updated_at'
+      {from: 'id', to: 'id'},
+      {from: 'username', to: 'username'},
+      {from: 'email', to: 'email'},
+      {from: 'password', to:'password'},
+      {from: 'role', to: 'role'},
+      {from: 'isVerified', to: 'is_verified'},
+      {from: 'createdAt', to: 'created_at'},
+      {from: 'updatedAt', to: 'updated_at'}
   ]
 })
 
-// const Offer = new Table({
-// table: 'offer',
-// schema: 'public',
-// columns: [
-//   'id',
-//   'offer_name',
-//   'price',
-//   'user_id'
-// ]
-// })
-
-const mapArgsToWhereColumns = ( source , Model ) => Object.entries( source ).reduce( ( m , [k,v] , i ) => {
-  if( i === 0 ) return m.columns[k].equal( v )
-  else return m.and( Model.columns[k].equal( v ) )
-} , Model)
-
-const where = {
-  id: 1
-}
-
+const Offer = new Table({
+table: 'offer',
+schema: 'public',
+columns: [
+  {from: 'id', to: 'id'},
+  {from: 'offerName', to: 'offer_name'},
+  {from: 'price', to: 'price'},
+  {from: 'userId', to: 'user_id'}
+]
+})
 
 console.log(
-  User.columns.is_verified === User.columns.isVerified,
-  User.columns.updated_at === User.columns.updatedAt,
-  User.columns.createdAt === User.columns.created_at
+  Offer.select(
+    Offer.columns.id
+  )
+  .from()
+  .end
 )
 
-// console.log(
-//   Offer.select(
-//     Offer.columns.offer_name,
-//     Offer.columns.price.sum()
-//   )
-//   .from()
-//   .groupBy(
-//     Offer.columns.offer_name
-//   )
-//   .having(
-//     Offer.columns.price.sum().between(10,50).and(
-//       Offer.columns.price.sum().equal(20)
-//     )
-//   )
-//   .end
-// )
+console.log(
+  Offer.select(
+    Offer.columns.offer_name,
+    Offer.columns.price.sum()
+  )
+  .from()
+  .groupBy(
+    Offer.columns.offer_name
+  )
+  .having(
+    Offer.columns.price.sum().between(10,50).and(
+      Offer.columns.price.sum().equal(20)
+    )
+  )
+  .end
+)
 
 
 // console.log(
