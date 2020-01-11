@@ -16,6 +16,7 @@ import _having from './Table/having'
 import Column from './Column'
 import * as util from '../utils'
 
+
 const Table = function({ table , schema, columns }){
     // Input check
     if(!table) throw new Error('please specify a table')
@@ -60,6 +61,9 @@ const Table = function({ table , schema, columns }){
 
         return o
     }, {})
+
+    util.setGetterDefaultProperty.call(this,'columns')
+    util.setGetterProperty(end).call(this,'end')
 }
 
 // Static method used to populate the prototype object of PostgreSQL class
@@ -85,7 +89,7 @@ Table.set = function(param){
 }
 // GETTER -SETTERS
 // end
-const end = function(){
+function end(){
     const params = this._params
     const monitor = this._monitor
     const statement = new Map(Object.entries(this._statement))
@@ -121,10 +125,6 @@ const end = function(){
 
     return [ f.join(' ')  , params  ]
 }
-
-Object.defineProperty(Table.prototype, 'end' , { get: end })
-Object.defineProperty(Table.prototype, 'columns' , { get: function(){ return this._columns }} )
-
 
 // SQL syntax available for pg-cli
 Table.set(_insertInto)

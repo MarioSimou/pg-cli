@@ -4,8 +4,9 @@
   "description": "This is a SQL generator specifically designed for PostgreSQL database.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --rootDir ./test -w 1",
-    "dev": "babel-node ./src/playground.js",
+    "unit:only": "jest --rootDir ./test",
+    "unit": "jest --rootDir ./test --watchAll",
+    "playground": "babel-node ./src/playground.js",
     "build": "webpack --config ./webpack.config.js"
   },
   "repository": {
