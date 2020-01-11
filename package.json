@@ -1,5 +1,5 @@
 {
-  "name": "pg-sql",
+  "name": "pg-sql-syntax",
   "version": "1.0.0",
   "description": "This is a SQL generator specifically designed for PostgreSQL database.",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MarioSimou/pg-sql.git"
+    "url": "git+https://github.com/MarioSimou/pg-sql-syntax.git"
   },
   "author": "Marios Simou",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MarioSimou/pg-sql/issues"
+    "url": "https://github.com/MarioSimou/pg-sql-syntax/issues"
   },
-  "homepage": "https://github.com/MarioSimou/pg-sql#readme",
+  "homepage": "https://github.com/MarioSimou/pg-sql-syntax#readme",
   "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.7.7",
